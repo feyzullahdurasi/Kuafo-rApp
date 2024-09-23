@@ -1,36 +1,45 @@
 package com.example.kuafrapp.View
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kuafrapp.adapter.BarberRecyclerAdapter
-import com.example.kuafrapp.databinding.ActivityHomeBinding
+import com.example.kuafrapp.databinding.FragmentHomeBinding
 import com.example.kuafrapp.viewmodel.HomeViewModel
 
-class HomeActivity : AppCompatActivity() {
+class HomeFragment : Fragment() {
 
-    private lateinit var binding: ActivityHomeBinding
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: HomeViewModel
     private val barberRecyclerAdapter = BarberRecyclerAdapter(arrayListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
 
-        // ViewBinding'i başlat
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
 
-        // ViewModel'i başlat
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         viewModel.refreshData()
 
-        // RecyclerView ayarlarını yap
-        binding.barberRecycleView.layoutManager = LinearLayoutManager(this)
+        binding.barberRecycleView.layoutManager = LinearLayoutManager(requireContext())
         binding.barberRecycleView.adapter = barberRecyclerAdapter
 
-        // SwipeRefreshLayout için listener ekle
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.barberRecycleView.visibility = View.GONE
             binding.barberErrorMessage.visibility = View.GONE
@@ -39,17 +48,16 @@ class HomeActivity : AppCompatActivity() {
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        // LiveData'ları gözlemle
         observeLiveData()
     }
 
     private fun observeLiveData() {
-        viewModel.barberLiveData.observe(this) {
+        viewModel.barberLiveData.observe(viewLifecycleOwner) {
             barberRecyclerAdapter.updateBarberList(it)
             binding.barberRecycleView.visibility = View.VISIBLE
         }
 
-        viewModel.barberError.observe(this) {
+        viewModel.barberError.observe(viewLifecycleOwner) {
             if (it) {
                 binding.barberErrorMessage.visibility = View.VISIBLE
                 binding.barberRecycleView.visibility = View.GONE
@@ -58,7 +66,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.barberLoading.observe(this) {
+        viewModel.barberLoading.observe(viewLifecycleOwner) {
             if (it) {
                 binding.barberLoading.visibility = View.VISIBLE
                 binding.barberRecycleView.visibility = View.GONE
@@ -68,4 +76,10 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

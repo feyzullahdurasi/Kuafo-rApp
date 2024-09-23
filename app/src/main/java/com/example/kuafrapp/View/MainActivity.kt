@@ -1,8 +1,8 @@
 package com.example.kuafrapp.View
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.kuafrapp.R
 import com.example.kuafrapp.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,26 +18,34 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavigationView: BottomNavigationView = binding.bottomNavigationView
 
-        // BottomNavigationView'de item seçildiğinde hangi activity'e gidileceğini belirliyoruz
+        // İlk başta HomeFragment'ı gösterelim
+        replaceFragment(HomeFragment())
+
+        // BottomNavigationView'de item seçildiğinde fragment değiştirme
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.navigation_home -> {
-                    val intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
+                    replaceFragment(HomeFragment())
                     true
                 }
                 R.id.navigation_maps -> {
-                    val intent = Intent(this, MapsActivity::class.java)
-                    startActivity(intent)
+                    replaceFragment(MapsFragment())
                     true
                 }
                 R.id.navigation_settings -> {
-                    val intent = Intent(this, SettingsActivity::class.java)
-                    startActivity(intent)
+                    replaceFragment(SettingsFragment())
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    // Fragment değiştirme fonksiyonu
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
+        fragmentTransaction.commit()
     }
 }

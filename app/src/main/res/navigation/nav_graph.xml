@@ -5,15 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeActivity">
-    <activity
+    <fragment
         android:id="@+id/homeActivity"
-        android:name="com.example.kuafrapp.View.HomeActivity"
+        android:name="com.example.kuafrapp.View.HomeFragment"
         android:label="activity_home"
-        tools:layout="@layout/activity_home" >
+        tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeActivity_to_barberDetailActivity"
+            android:id="@+id/action_homeFragment_to_barberDetailActivity"
             app:destination="@id/barberDetailActivity" />
-    </activity>
+    </fragment>
     <activity
         android:id="@+id/barberDetailActivity"
         android:name="com.example.kuafrapp.View.BarberDetailActivity"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KuaförApp</string>
+    <string name="app_name">Barber</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -17,4 +17,5 @@
     <string name="login">login\n</string>
     <string name="logina">login with google</string>
     <string name="register_text">if you new user click</string>
+    <string name="map">Map</string>
 </resources>

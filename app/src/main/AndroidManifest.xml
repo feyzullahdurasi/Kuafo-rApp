@@ -22,7 +22,7 @@
             android:value="YOUR_API_KEY" />
 
         <activity
-            android:name=".View.SettingsActivity"
+            android:name=".View.SettingsFragment"
             android:exported="false" />
 
         <activity
@@ -32,7 +32,7 @@
             android:name=".View.InfoActivity"
             android:exported="false" />
         <activity
-            android:name=".View.HomeActivity"
+            android:name=".View.HomeFragment"
             android:exported="false" />
         <activity
             android:name=".View.BarberDetailActivity"
@@ -47,7 +47,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".View.MapsActivity"
+            android:name=".View.MapsFragment"
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity

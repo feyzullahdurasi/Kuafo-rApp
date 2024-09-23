@@ -5,21 +5,21 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-    <activity
+    <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.kuafrapp.View.HomeActivity"
+        android:name="com.example.kuafrapp.View.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/activity_home" />
+        tools:layout="@layout/fragment_home" />
 
-    <activity
+    <fragment
         android:id="@+id/navigation_maps"
-        android:name="com.example.kuafrapp.View.MapsActivity"
+        android:name="com.example.kuafrapp.View.MapsFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/activity_dashboard" />
 
-    <activity
+    <fregment
         android:id="@+id/navigation_settings"
-        android:name="com.example.kuafrapp.View.SettingsActivity"
+        android:name="com.example.kuafrapp.View.SettingsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/activity_notifications" />
 </navigation>

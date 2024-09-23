@@ -1,10 +1,12 @@
 package com.example.kuafrapp.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kuafrapp.View.HomeActivityDirections
+import com.example.kuafrapp.View.BarberDetailActivity
+import com.example.kuafrapp.View.HomeFragmentDirections
 import com.example.kuafrapp.databinding.BarberRecyclerRowBinding
 import com.example.kuafrapp.model.Barber
 import com.example.kuafrapp.util.dowloandImage
@@ -34,13 +36,16 @@ class BarberRecyclerAdapter(val barberList: ArrayList<Barber>) : RecyclerView.Ad
         holder.binding.barberName.text = barber.barberName
         holder.binding.localeName.text = barber.localeName
 
-        /*holder.itemView.setOnClickListener {
-            val action = HomeActivityDirections.action_homeActivity_to_barberDetailActivity(barber.uuid)
-            Navigation.findNavController(it).navigate(action)
-        }*/
+        holder.itemView.setOnClickListener {
+            // Activity'ye yönlendirme yap
+            val intent = Intent(holder.itemView.context, BarberDetailActivity::class.java)
+            intent.putExtra("barberId", barber.uuid)
+            holder.itemView.context.startActivity(intent)
+        }
 
         holder.binding.imageView.dowloandImage(barberList[position].barberImage, makePlaceHolder(holder.itemView.context))
     }
+
 }
 
 
