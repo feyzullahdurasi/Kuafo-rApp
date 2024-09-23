@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeActivity">
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.example.kuafrapp.View.HomeActivity"
+        android:label="activity_home"
+        tools:layout="@layout/activity_home" >
+        <action
+            android:id="@+id/action_homeActivity_to_barberDetailActivity"
+            app:destination="@id/barberDetailActivity" />
+    </activity>
+    <activity
+        android:id="@+id/barberDetailActivity"
+        android:name="com.example.kuafrapp.View.BarberDetailActivity"
+        android:label="activity_barber_detail"
+        tools:layout="@layout/activity_barber_detail" >
+        <argument
+            android:name="barberId"
+            app:argType="integer" />
+    </activity>
+</navigation>

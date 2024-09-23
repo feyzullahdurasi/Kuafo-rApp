@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.InfoActivity">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Bilgi"
+        android:textColor="#192EA5"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Ne tür bir kuaföre ihtiyacınız var? "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Button
+        android:id="@+id/manHairdresserImageButton"
+        android:layout_width="380dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="50dp"
+        android:text="erkek kuaför"
+        android:contentDescription="@string/erkek_kuaf_r"
+        android:hint="@string/e_g_5"
+        app:backgroundTint="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:ignore="MissingConstraints,NotSibling"
+        tools:src="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/womenHairdresserImageButton"
+        android:layout_width="380dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="10dp"
+        android:text="kadın kuaför"
+        android:contentDescription="kadın kuaförü"
+        android:backgroundTint="@color/pink"
+        android:hint="e.g 5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manHairdresserImageButton"
+        tools:ignore="MissingConstraints,NotSibling,UnknownId"
+        tools:src="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/petGroomerImageButton"
+        android:layout_width="380dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="10dp"
+        android:text="pet kuaför"
+        android:backgroundTint="@color/green"
+        android:contentDescription="pet kuaförü"
+        android:hint="@string/e_g_6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/womenHairdresserImageButton"
+        tools:ignore="MissingConstraints,NotSibling"
+        tools:src="@tools:sample/avatars" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

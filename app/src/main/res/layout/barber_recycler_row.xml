@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/uuid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/barberName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selim Serdar Kuaför"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/localeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aydınlı Mah. Merkez"
+            android:textSize="18sp"
+            android:layout_margin="5dp"/>
+    </LinearLayout>
+
+</LinearLayout>

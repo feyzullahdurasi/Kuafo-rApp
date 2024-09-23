@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_register"
+    app:startDestination="@id/registerActivity">
+
+    <activity
+        android:id="@+id/registerActivity"
+        android:name="com.example.kuafrapp.View.login.RegisterActivity"
+        android:label="activity_register"
+        tools:layout="@layout/activity_register" >
+        <action
+            android:id="@+id/action_registerActivity_to_infoActivity"
+            app:destination="@id/infoActivity" />
+    </activity>
+
+    <activity
+        android:id="@+id/infoActivity"
+        android:name="com.example.kuafrapp.View.InfoActivity"
+        android:label="activity_info"
+        tools:layout="@layout/activity_info" />
+
+</navigation>
