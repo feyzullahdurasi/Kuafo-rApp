@@ -15,11 +15,11 @@
         android:id="@+id/navigation_maps"
         android:name="com.example.kuafrapp.View.MapsFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/activity_dashboard" />
+        tools:layout="@layout/fragment_maps" />
 
-    <fregment
+    <fragment
         android:id="@+id/navigation_settings"
         android:name="com.example.kuafrapp.View.SettingsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/activity_notifications" />
+        tools:layout="@layout/fragment_settings" />
 </navigation>

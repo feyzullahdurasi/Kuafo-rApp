@@ -4,6 +4,7 @@
     <style name="Base.Theme.KuaförApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
 
+        <item name="colorPrimaryVariant">@color/grey</item>
         <!-- Customize your theme here. -->
     </style>
 

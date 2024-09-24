@@ -52,5 +52,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/localeName" />
 
+    <Button
+        android:id="@+id/datePickerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Tarih Seç"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rating" />
+
+    <Button
+        android:id="@+id/timePickerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saat Seç"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datePickerButton"/>
+
+    <Button
+        android:id="@+id/bookAppointmentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Randevu Al"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timePickerButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

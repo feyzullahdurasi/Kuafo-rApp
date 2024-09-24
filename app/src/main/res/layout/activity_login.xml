@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".View.login.LoginActivity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/scissors_anim" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/registerCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
+        app:cardCornerRadius="0dp"
         app:cardElevation="8dp"
         app:strokeColor="@color/black"
         app:strokeWidth="0.5dp"
-        app:cardCornerRadius="0dp">
+        android:backgroundTint="@color/white">
 
         <LinearLayout
-            android:layout_margin="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:orientation="vertical">
 
 
@@ -35,10 +44,10 @@
                     android:id="@+id/eMailEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="12dp"
                     android:hint="@string/e_mail"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="12dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,33 +56,35 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true"
+                android:layout_marginTop="12dp"
                 app:counterEnabled="true"
                 app:counterMaxLength="15"
-                android:layout_marginTop="12dp">
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwordEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="12dp"
                     android:hint="@string/password"
+                    android:inputType="textPassword"
                     android:maxLength="15"
-                    android:inputType="textPassword" />
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="12dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginButton"
+                android:textSize="@dimen/activity_horizontal_margin"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
                 android:layout_marginTop="12dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:backgroundTint="@color/blue"
                 android:text="@string/login"
                 app:cornerRadius="0dp">
 
@@ -85,18 +96,19 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
                 android:layout_marginTop="15dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/logina"
+                android:textColor="@color/black"
                 app:icon="@mipmap/google_icon"
                 app:iconSize="38dp"
-                app:iconTint="@null"
-                android:text="@string/logina">
+                app:iconTint="@null">
 
             </com.google.android.material.button.MaterialButton>
-            
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,7 +117,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/register_text"/>
+                    android:text="@string/register_text" />
 
                 <TextView
                     android:id="@+id/registerButton"
@@ -116,7 +128,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="@string/register"
-                    android:textColor="@color/purple_700"
+                    android:textColor="@color/blue"
                     tools:ignore="TouchTargetSizeCheck" />
 
             </LinearLayout>
