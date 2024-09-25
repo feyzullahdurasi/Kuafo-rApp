@@ -3,10 +3,8 @@ package com.example.kuafrapp.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kuafrapp.View.BarberDetailActivity
-import com.example.kuafrapp.View.HomeFragmentDirections
 import com.example.kuafrapp.databinding.BarberRecyclerRowBinding
 import com.example.kuafrapp.model.Barber
 import com.example.kuafrapp.util.dowloandImage

@@ -1,85 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".View.BarberDetailActivity">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/barberImage"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:src="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/barberName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Selim Serdar Kuaför"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barberImage" />
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="80dp"
+        tools:ignore="MissingConstraints">
 
-    <TextView
-        android:id="@+id/localeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Aydınlı Mah. Merkez"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barberName" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <!-- Berber Bilgisi -->
+            <TextView
+                android:id="@+id/barberName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="Berber Adı"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="4.7"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/localeName" />
+            <TextView
+                android:id="@+id/localeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Berberin Bulunduğu Yer"
+                android:textSize="16sp"
+                android:paddingBottom="8dp" />
 
-    <Button
-        android:id="@+id/datePickerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Tarih Seç"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rating" />
+            <ImageView
+                android:id="@+id/barberImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="30dp"
+                android:contentDescription="Berber Resmi"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="16dp" />
 
-    <Button
-        android:id="@+id/timePickerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Saat Seç"
-        android:layout_marginTop="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePickerButton"/>
+            <!-- Service selection (Checkboxes) -->
+            <LinearLayout
+                android:id="@+id/serviceContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="8dp" />
 
-    <Button
-        android:id="@+id/bookAppointmentButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Randevu Al"
-        android:layout_marginTop="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timePickerButton" />
+            <!-- Date Picker -->
+            <Button
+                android:id="@+id/datePickerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Tarih Seç"
+                android:padding="12dp"
+                android:backgroundTint="@color/red"
+                android:textColor="@android:color/white" />
+
+            <!-- Time Picker -->
+            <Button
+                android:id="@+id/timePickerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Saat Seç"
+                android:padding="12dp"
+                android:backgroundTint="@color/red"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="12dp" />
+
+            <!-- Comments section -->
+            <TextView
+                android:id="@+id/commentsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yorumlar"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingTop="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <!-- Add a comment -->
+            <EditText
+                android:id="@+id/commentEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Yorumunuzu yazın"
+                android:minHeight="48dp" />
+            <Button
+                android:id="@+id/addCommentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yorum Ekle"
+                android:layout_gravity="right"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="80dp"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Footer: Total price and Book appointment button -->
+    <LinearLayout
+        android:id="@+id/footerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@android:color/darker_gray"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/totalPriceText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Toplam: 0₺"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bookAppointmentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="Randevuyu Onayla"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

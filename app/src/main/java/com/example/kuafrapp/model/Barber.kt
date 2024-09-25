@@ -21,7 +21,7 @@ data class Barber(
     val rating: String?,
     @ColumnInfo(name = "yag")
     @SerializedName("yag")
-    val besinYag : String?,
+    val comment : String?,
     @ColumnInfo(name = "gorsel")
     @SerializedName("gorsel")
     val barberImage: String?
@@ -31,6 +31,11 @@ data class Barber(
     var uuid: Int = 0
 }
 
+
+data class Comment(
+    val username: String,
+    val commentText: String
+)
 /*
     val BarberName: String?,
     val BarberLocale: String?,
