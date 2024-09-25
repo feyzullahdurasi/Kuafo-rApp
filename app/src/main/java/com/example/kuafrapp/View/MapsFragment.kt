@@ -8,7 +8,9 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.kuafrapp.R
+import com.example.kuafrapp.databinding.FragmentMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -33,6 +36,25 @@ class MapsFragment : Fragment(R.layout.fragment_maps), OnMapReadyCallback, Googl
     private lateinit var sharedPreferences: SharedPreferences
     var trackBoolean: Boolean? = null
 
+    private var _binding: FragmentMapsBinding? = null
+    private val binding get() = _binding!!
+    private var serviceType: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Argümanlardan hizmet tipini alıyoruz
+        serviceType = arguments?.getString("SERVICE_TYPE")
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentMapsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -43,6 +65,19 @@ class MapsFragment : Fragment(R.layout.fragment_maps), OnMapReadyCallback, Googl
         sharedPreferences =
             requireActivity().getSharedPreferences("com.example.kuafrapp", AppCompatActivity.MODE_PRIVATE)
         trackBoolean = false
+
+        serviceType?.let {
+            showServiceLocationsOnMap(it)
+        }
+    }
+
+    private fun showServiceLocationsOnMap(serviceType: String) {
+        // API'den hizmet konumlarını alıp harita üzerinde gösterme işlemi burada yapılır.
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

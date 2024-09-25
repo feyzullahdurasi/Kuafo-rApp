@@ -5,77 +5,152 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".View.InfoActivity">
 
-    <!-- TODO: Update blank fragment layout -->
-
-
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Bilgi"
+        android:text="Hizmet Seçimi"
         android:textColor="#192EA5"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="16dp"/>
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/subTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Ne tür bir kuaföre ihtiyacınız var? "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <Button
-        android:id="@+id/manHairdresserImageButton"
-        android:layout_width="380dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="50dp"
-        android:text="erkek kuaför"
-        android:contentDescription="@string/erkek_kuaf_r"
-        android:hint="@string/e_g_5"
-        app:backgroundTint="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:ignore="MissingConstraints,NotSibling"
-        tools:src="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/womenHairdresserImageButton"
-        android:layout_width="380dp"
-        android:layout_height="125dp"
+        android:text="İhtiyacınız olan hizmeti seçin"
+        android:textSize="16sp"
         android:layout_marginTop="10dp"
-        android:text="kadın kuaför"
-        android:contentDescription="kadın kuaförü"
-        android:backgroundTint="@color/pink"
-        android:hint="e.g 5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/manHairdresserImageButton"
-        tools:ignore="MissingConstraints,NotSibling,UnknownId"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        android:layout_marginBottom="24dp"/>
 
+    <!-- Erkek Kuaför -->
     <Button
-        android:id="@+id/petGroomerImageButton"
-        android:layout_width="380dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="10dp"
-        android:text="pet kuaför"
-        android:backgroundTint="@color/green"
-        android:contentDescription="pet kuaförü"
-        android:hint="@string/e_g_6"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/manHairdresserButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Erkek Kuaför"
+        android:textSize="18sp"
+        android:backgroundTint="#3366FF"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/subTitleTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/womenHairdresserImageButton"
-        tools:ignore="MissingConstraints,NotSibling"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Kadın Kuaför -->
+    <Button
+        android:id="@+id/womenHairdresserButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Kadın Kuaför"
+        android:textSize="18sp"
+        android:backgroundTint="#FF66CC"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/manHairdresserButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Pet Kuaför -->
+    <Button
+        android:id="@+id/petGroomerButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Pet Kuaför"
+        android:textSize="18sp"
+        android:backgroundTint="#66CC66"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/womenHairdresserButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Araba Yıkama -->
+    <Button
+        android:id="@+id/carWashButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Araba Yıkama"
+        android:textSize="18sp"
+        android:backgroundTint="#FF6666"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/petGroomerButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Çocuk Kuaför -->
+    <Button
+        android:id="@+id/childHairdresserButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Çocuk Kuaför"
+        android:textSize="18sp"
+        android:backgroundTint="#FF9966"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/carWashButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Spa ve Masaj -->
+    <Button
+        android:id="@+id/spaButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Spa ve Masaj"
+        android:textSize="18sp"
+        android:backgroundTint="#9933FF"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/childHairdresserButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Tırnak Bakımı -->
+    <Button
+        android:id="@+id/nailCareButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Tırnak Bakımı"
+        android:textSize="18sp"
+        android:backgroundTint="#33CCCC"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/spaButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Cilt Bakımı -->
+    <Button
+        android:id="@+id/skinCareButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Cilt Bakımı"
+        android:textSize="18sp"
+        android:backgroundTint="#FFCC33"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/nailCareButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

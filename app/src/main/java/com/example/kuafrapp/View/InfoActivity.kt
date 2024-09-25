@@ -12,17 +12,26 @@ class InfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // View Binding kullanımı
         binding = ActivityInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.manHairdresserImageButton.setOnClickListener { navigateToMainActivity() }
-        binding.womenHairdresserImageButton.setOnClickListener { navigateToMainActivity() }
-        binding.petGroomerImageButton.setOnClickListener { navigateToMainActivity() }
+        // Butonlara tıklama olaylarını ekliyoruz ve her birine ilgili hizmetin türünü gönderiyoruz
+        binding.manHairdresserButton.setOnClickListener { navigateToMainActivity("erkek_kuafor") }
+        binding.womenHairdresserButton.setOnClickListener { navigateToMainActivity("kadin_kuafor") }
+        binding.petGroomerButton.setOnClickListener { navigateToMainActivity("pet_kuafor") }
+        binding.carWashButton.setOnClickListener { navigateToMainActivity("araba_yikama") }
+        binding.childHairdresserButton.setOnClickListener { navigateToMainActivity("cocuk_kuafor") }
+        binding.spaButton.setOnClickListener { navigateToMainActivity("spa_masaj") }
+        binding.nailCareButton.setOnClickListener { navigateToMainActivity("tirnak_bakimi") }
+        binding.skinCareButton.setOnClickListener { navigateToMainActivity("cilt_bakimi") }
     }
 
-    private fun navigateToMainActivity() {
-        // MainActivity'e geçiş yapmak için intent kullanıyoruz
-        val intent = Intent(this, MainActivity::class.java)
+    // MainActivity'ye veri aktarıp geçiş yapıyoruz
+    private fun navigateToMainActivity(serviceType: String) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("SERVICE_TYPE", serviceType)  // Seçilen hizmeti intent ile gönderiyoruz
+        }
         startActivity(intent)
     }
 }

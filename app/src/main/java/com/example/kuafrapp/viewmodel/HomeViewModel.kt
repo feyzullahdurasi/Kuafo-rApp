@@ -22,7 +22,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val barberApiService = BarberAPIService()
     private val PSharedPreferences = PSharedPreferences(getApplication())
 
-    fun refreshData() {
+    fun refreshData(s: String) {
 
         val kaydedilmeZamani = PSharedPreferences.getTime()
         if (kaydedilmeZamani != null && kaydedilmeZamani != 0L && System.nanoTime() - kaydedilmeZamani < updateTime){
@@ -33,7 +33,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun refreshDataFromInternet() {
+    fun refreshDataFromInternet(serviceType: String?) {
         getDataInternet()
     }
 

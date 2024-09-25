@@ -10,8 +10,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.example.kuafrapp.R
 import com.example.kuafrapp.View.InfoActivity
 import com.example.kuafrapp.databinding.ActivityLoginBinding
@@ -88,7 +86,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.loginButton -> /*viewModel.onLoginClick(
+            R.id.loginButton ->
+                /*viewModel.onLoginClick(
                 binding.eMailEt.text.toString(),
                 binding.passwordEt.text.toString()
             )*/ {
