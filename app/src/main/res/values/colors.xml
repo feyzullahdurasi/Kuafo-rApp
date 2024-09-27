@@ -14,4 +14,22 @@
     <color name="yellow">#FFFF00</color>
     <color name="green">#008000</color>
     <color name="red">#BC1D1E</color>
+    <color name="modernLightGray">#F4F4F4</color>
+    <color name="modernWhite">#FFFFFF</color>
+    <color name="modernDarkGray">#4A4A4A</color>
+    <color name="modernBlue">#3F8EF7</color>
+    <!-- Primary and Secondary Colors -->
+    <color name="primaryDark">#37474F</color> <!-- Koyu renk -->
+    <color name="secondaryDark">#546E7A</color> <!-- İkincil koyu renk -->
+    <color name="backgroundGray">#ECEFF1</color> <!-- Arka plan için gri renk -->
+
+    <!-- Buttons -->
+    <color name="buttonBlue">#2196F3</color> <!-- Mavi buton rengi -->
+    <color name="buttonRed">#F44336</color> <!-- Kırmızı buton rengi -->
+
+    <color name="primaryLight">#62727B</color>       <!-- Ana açık renk -->
+    <color name="textBlack">#212121</color>          <!-- Ana metin rengi siyah -->
+    <color name="textWhite">#FFFFFF</color>          <!-- Buton metinleri için beyaz renk -->
+    <color name="hintGrey">#757575</color>           <!-- EditText için ipucu rengi gri -->
+
 </resources>

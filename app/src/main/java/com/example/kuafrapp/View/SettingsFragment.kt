@@ -1,5 +1,6 @@
 package com.example.kuafrapp.View
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import com.example.kuafrapp.R
 
 class SettingsFragment : Fragment() {
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private lateinit var notificationSwitch: Switch
     private lateinit var themeRadioGroup: RadioGroup
     private lateinit var languageSpinner: Spinner

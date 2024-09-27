@@ -3,47 +3,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="@color/backgroundGray">
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="80dp"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/footerLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
+
             <!-- Berber Bilgisi -->
             <TextView
                 android:id="@+id/barberName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
                 android:text="Berber Adı"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="24sp"
+                android:textColor="@color/primaryDark"
+                android:textStyle="bold"
+                android:paddingBottom="8dp" />
 
             <TextView
                 android:id="@+id/localeName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Berberin Bulunduğu Yer"
+                android:text="Yer"
                 android:textSize="16sp"
+                android:textColor="@color/secondaryDark"
                 android:paddingBottom="8dp" />
 
             <ImageView
                 android:id="@+id/barberImage"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="30dp"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
                 android:contentDescription="Berber Resmi"
                 android:layout_gravity="center_horizontal"
-                android:paddingBottom="16dp" />
+                android:scaleType="centerCrop"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/barber_image_bg" />
 
             <!-- Service selection (Checkboxes) -->
             <LinearLayout
@@ -58,11 +63,11 @@
                 android:id="@+id/datePickerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
                 android:text="Tarih Seç"
                 android:padding="12dp"
-                android:backgroundTint="@color/red"
-                android:textColor="@android:color/white" />
+                android:backgroundTint="@color/buttonBlue"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="20dp" />
 
             <!-- Time Picker -->
             <Button
@@ -71,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:text="Saat Seç"
                 android:padding="12dp"
-                android:backgroundTint="@color/red"
+                android:backgroundTint="@color/buttonBlue"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="12dp" />
 
@@ -81,7 +86,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yorumlar"
-                android:textSize="16sp"
+                android:textSize="18sp"
+                android:textColor="@color/primaryDark"
                 android:textStyle="bold"
                 android:paddingTop="16dp" />
 
@@ -97,15 +103,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Yorumunuzu yazın"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:background="@drawable/edit_text_bg" />
+
             <Button
                 android:id="@+id/addCommentButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yorum Ekle"
+                android:backgroundTint="@color/buttonBlue"
+                android:textColor="@android:color/white"
                 android:layout_gravity="right"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="80dp"/>
+                android:layout_marginTop="8dp" />
         </LinearLayout>
 
     </ScrollView>
@@ -115,12 +124,10 @@
         android:id="@+id/footerLayout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:background="@android:color/darker_gray"
-        android:gravity="center_vertical"
+        android:background="@android:color/white"
         android:orientation="horizontal"
         android:padding="16dp"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
@@ -130,14 +137,15 @@
             android:layout_weight="1"
             android:text="Toplam: 0₺"
             android:textSize="18sp"
+            android:textColor="@color/primaryDark"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/bookAppointmentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue"
             android:text="Randevuyu Onayla"
+            android:backgroundTint="@color/buttonBlue"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

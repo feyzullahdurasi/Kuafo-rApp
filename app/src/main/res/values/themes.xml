@@ -1,12 +1,52 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-
+    <!-- Base application theme -->
     <style name="Base.Theme.KuaförApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/primaryDark</item>
+        <item name="colorPrimaryVariant">@color/secondaryDark</item>
+        <item name="colorSecondary">@color/buttonBlue</item>
 
-        <item name="colorPrimaryVariant">@color/grey</item>
-        <!-- Customize your theme here. -->
+        <!-- Customize your theme here -->
+        <item name="android:statusBarColor">@color/primaryDark</item>
+        <item name="android:navigationBarColor">@color/secondaryDark</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/secondaryDark</item>
+
+        <!-- Button styling -->
+        <item name="buttonStyle">@style/KuaforButtonStyle</item>
+
+        <!-- EditText styling -->
+        <item name="editTextStyle">@style/KuaforEditTextStyle</item>
+
+        <!-- MaterialCardView styling -->
+        <item name="materialCardViewStyle">@style/KuaforCardStyle</item>
     </style>
 
+    <!-- App theme -->
     <style name="Theme.KuaförApp" parent="Base.Theme.KuaförApp" />
+
+    <!-- Button style -->
+    <style name="KuaforButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/buttonBlue</item>
+        <item name="android:textColor">@color/textWhite</item>
+
+    </style>
+
+    <!-- EditText style -->
+    <style name="KuaforEditTextStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:background">@drawable/edit_text_bg</item>
+        <item name="android:textColor">@color/black</item>
+
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <!-- MaterialCardView style -->
+    <style name="KuaforCardStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
 </resources>

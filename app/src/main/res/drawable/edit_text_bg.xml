@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background color -->
+    <solid android:color="#FFFFFF"/> <!-- Beyaz arka plan -->
+
+    <!-- Border styling -->
+    <stroke
+        android:width="2dp"
+        android:color="#2196F3"/> <!-- Mavi sınır -->
+
+    <!-- Rounded corners -->
+    <corners android:radius="8dp"/> <!-- Köşeleri yuvarla -->
+
+    <!-- Padding (optional) -->
+    <padding
+        android:left="10dp"
+        android:right="10dp"
+        android:top="8dp"
+        android:bottom="8dp"/>
+</shape>
