@@ -22,69 +22,87 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val barberApiService = BarberAPIService()
     private val PSharedPreferences = PSharedPreferences(getApplication())
 
+    // Verileri yenile
     fun refreshData(s: String) {
-
         val kaydedilmeZamani = PSharedPreferences.getTime()
-        if (kaydedilmeZamani != null && kaydedilmeZamani != 0L && System.nanoTime() - kaydedilmeZamani < updateTime){
-            //Sqlite'tan çek
+        if (kaydedilmeZamani != null && kaydedilmeZamani != 0L && System.nanoTime() - kaydedilmeZamani < updateTime) {
+            // SQLite'tan veriyi çek
             getDataFromSQLite()
         } else {
             getDataInternet()
         }
     }
 
+    // Internet'ten yenile
     fun refreshDataFromInternet(serviceType: String?) {
         getDataInternet()
     }
 
-    private fun getDataFromSQLite(){
+    // SQLite'tan veri çekme
+    private fun getDataFromSQLite() {
         barberLoading.value = true
-
         viewModelScope.launch {
-
             val barbersList = BarberDatabase(getApplication()).barberDao().getAllBarber()
-            showBarber(barbersList)
-            Toast.makeText(getApplication(),"Besinleri Room'dan Aldık",Toast.LENGTH_LONG).show()
-
+            withContext(Dispatchers.Main) {
+                showBarber(barbersList)
+                Toast.makeText(getApplication(), "Veriler Room'dan alındı", Toast.LENGTH_LONG).show()
+            }
         }
-
     }
 
+    // Internet'ten veri çekme
     private fun getDataInternet() {
         barberLoading.value = true
 
-        viewModelScope.launch(Dispatchers.IO) {
-            val barberLiveData = barberApiService.getData()
-            withContext(Dispatchers.Main) {
-                barberLoading.value = false
-                getDataFromRoom(barberLiveData)
-                Toast.makeText(getApplication(),"Besinleri Internet'ten Aldık",Toast.LENGTH_LONG).show()
+        viewModelScope.launch {
+            try {
+                // API'den veri al
+                val barberList = barberApiService.getData()
+
+                // Ana thread'e dön ve UI güncelle
+                withContext(Dispatchers.Main) {
+                    if (barberList.isNotEmpty()) {
+                        getDataFromRoom(barberList)
+                        Toast.makeText(getApplication(), "Veriler Internet'ten alındı", Toast.LENGTH_LONG).show()
+                    } else {
+                        barberError.value = true
+                        barberLoading.value = false
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    barberError.value = true
+                    barberLoading.value = false
+                    Toast.makeText(getApplication(), "Bir hata oluştu: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                }
             }
         }
-
     }
 
-    private fun showBarber(barberList: List<Barber>){
+    // Barber listesi UI'ya göster
+    private fun showBarber(barberList: List<Barber>) {
         barberLiveData.value = barberList
         barberError.value = false
         barberLoading.value = false
     }
 
-    private fun getDataFromRoom(barberList: List<Barber>)  {
-
+    // Verileri Room veritabanına kaydetme
+    private fun getDataFromRoom(barberList: List<Barber>) {
         viewModelScope.launch(Dispatchers.IO) {
-
             val dao = BarberDatabase(getApplication()).barberDao()
             dao.deleteAllBarber()
             val uuidList = dao.insertAll(barberList.toTypedArray())
-            var i = 0
-            while (i < barberList.size) {
+
+            // UUID'leri güncelle
+            for (i in barberList.indices) {
                 barberList[i].uuid = uuidList[i].toInt()
-                i += 1
             }
-            showBarber(barberList)
+
+            // Ana thread'e dön ve UI güncelle
+            withContext(Dispatchers.Main) {
+                showBarber(barberList)
+            }
         }
         PSharedPreferences.saveTime(System.nanoTime())
     }
-
 }

@@ -2,6 +2,7 @@ package com.example.kuafrapp.View
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.CheckBox
 import android.widget.Toast
@@ -65,6 +66,11 @@ class BarberDetailActivity : AppCompatActivity() {
 
         // Yorum ekleme ve önceki yorumları gösterme
         setupCommentsSection()
+
+        // Paylaş butonu için tıklama işlemi
+        binding.shareButton.setOnClickListener {
+            shareBarberDetails()
+        }
     }
 
     private fun setupServiceCheckboxes() {
@@ -158,9 +164,9 @@ class BarberDetailActivity : AppCompatActivity() {
 
     private fun observeLiveData() {
         viewModel.barberLiveData.observe(this) { barber ->
-            binding.barberName.text = barber.barberName
-            binding.localeName.text = barber.localeName
-            binding.barberImage.dowloandImage(barber.barberImage, makePlaceHolder(this))
+            binding.barberName.text = barber?.barberName ?: "empty"
+            binding.localeName.text = barber?.localeName ?: "empty"
+            binding.barberImage.dowloandImage(barber?.barberImage, makePlaceHolder(this))
         }
     }
 
@@ -178,5 +184,21 @@ class BarberDetailActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Lütfen tüm alanları doldurun", Toast.LENGTH_LONG).show()
         }
+    }
+
+    // Paylaşım işlemini gerçekleştiren fonksiyon
+    private fun shareBarberDetails() {
+        val barberName = binding.barberName.text.toString()
+        val localeName = binding.localeName.text.toString()
+
+        val shareText = "Kuaför Detayları:\nKuaför: $barberName\nYer: $localeName\nToplam Ücret: ${totalPrice}₺"
+
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, shareText)
+            type = "text/plain"
+        }
+
+        startActivity(Intent.createChooser(shareIntent, "Paylaşmak için uygulama seçin"))
     }
 }
