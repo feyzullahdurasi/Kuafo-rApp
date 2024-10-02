@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -16,10 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KuaförApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".View.RateBarberActivity"
+            android:exported="false" />
         <activity
             android:name=".View.SplashActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,8 +52,7 @@
             android:exported="false" />
         <activity
             android:name=".View.login.LoginActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".View.MapsFragment"
             android:exported="false"
@@ -57,7 +60,7 @@
         <activity
             android:name=".View.MainActivity"
             android:exported="false"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

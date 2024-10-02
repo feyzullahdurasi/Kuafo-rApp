@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         app:cardElevation="8dp"
+        android:gravity="center"
         android:backgroundTint="@android:color/white"
         app:strokeColor="@color/black"
         app:strokeWidth="0.5dp"
@@ -24,7 +25,146 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            
+
+            <Switch
+                android:id="@+id/barberSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="Bir işletme sahibiyim."
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <!-- Berber bilgileri - Başlangıçta görünmez, Switch açıldığında görünür olacak -->
+            <LinearLayout
+                android:id="@+id/barberInfoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/selectPhotoButton"
+                    android:layout_width="120dp"
+                    android:layout_height="150dp"
+                    android:text="Fotoğraf Seç" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/businessNameTitle"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/businessNameEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="12dp"
+                        android:hint="İşletme Adı"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/locationTitle"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/locationEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="12dp"
+                        android:hint="Konum"
+                        android:inputType="text"
+                        android:maxLength="100"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/telephoneNumber"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/telephoneNumberEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="12dp"
+                        android:hint="Telefon Numarası"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.gms.maps.MapView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/mapView">
+
+                </com.google.android.gms.maps.MapView>
+
+                <LinearLayout
+                    android:id="@+id/servicesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="12dp">
+
+                    <CheckBox
+                        android:id="@+id/menHairCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Erkek Kuaför" />
+
+                    <CheckBox
+                        android:id="@+id/womenHairCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kadın Kuaför" />
+
+                    <CheckBox
+                        android:id="@+id/petGroomingCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pet Kuaför" />
+
+                    <CheckBox
+                        android:id="@+id/carWashCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:text="Araba Yıkama" />
+
+                    <CheckBox
+                        android:id="@+id/kidHairCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Çocuk Kuaför" />
+
+                    <CheckBox
+                        android:id="@+id/spaMassageCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Spa ve Masaj" />
+
+                    <CheckBox
+                        android:id="@+id/nailCareCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tırnak Bakımı" />
+
+                    <CheckBox
+                        android:id="@+id/skinCareCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cilt Bakımı" />
+                </LinearLayout>
+
+            </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fullNameTitle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -122,4 +262,4 @@
     </com.google.android.material.card.MaterialCardView>
 
 
-</LinearLayout>
+</ScrollView>

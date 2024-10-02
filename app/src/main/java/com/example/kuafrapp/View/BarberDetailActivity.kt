@@ -1,7 +1,7 @@
 package com.example.kuafrapp.View
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.CheckBox
@@ -9,8 +9,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.kuafrapp.adapter.CommentsAdapter
 import com.example.kuafrapp.databinding.ActivityBarberDetailBinding
+import com.example.kuafrapp.message.ReminderWorker
 import com.example.kuafrapp.model.Comment
 import com.example.kuafrapp.util.dowloandImage
 import com.example.kuafrapp.util.makePlaceHolder
@@ -18,6 +22,7 @@ import com.example.kuafrapp.viewmodel.BarberDetailViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class BarberDetailActivity : AppCompatActivity() {
 
@@ -121,20 +126,21 @@ class BarberDetailActivity : AppCompatActivity() {
             datePicker.show()
         }
 
-        // TimePicker açılması ve saat seçilmesi
+        // TimePicker açılması ve sadece 09:00 - 18:00 saatleri arasında seçim yapılabilmesi
         binding.timePickerButton.setOnClickListener {
-            val timePicker = TimePickerDialog(
-                this,
-                { _, hourOfDay, _ ->
-                    if (hourOfDay in availableHours) {
-                        binding.timePickerButton.text = String.format("%02d:00", hourOfDay)
-                    } else {
-                        Toast.makeText(this, "Sadece 9:00 - 18:00 saatleri arasında randevu alınabilir", Toast.LENGTH_SHORT).show()
-                    }
-                },
-                9, 0, true
-            )
-            timePicker.show()
+            // Saat aralığını 9 ile 18 arasında liste olarak belirleyelim
+            val availableHours = (9..18).map { String.format("%02d:00", it) }.toTypedArray()
+
+            // Saatleri seçmek için bir AlertDialog kullanıyoruz
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Saat Seç")
+            builder.setItems(availableHours) { _, which ->
+                // Kullanıcının seçtiği saati butona yazdırıyoruz
+                binding.timePickerButton.text = availableHours[which]
+            }
+
+            // Dialogu göster
+            builder.show()
         }
     }
 
@@ -180,10 +186,34 @@ class BarberDetailActivity : AppCompatActivity() {
                 "Randevu alındı: $selectedDate - $selectedTime - ${selectedServices.joinToString(", ")} (${totalPrice}₺)",
                 Toast.LENGTH_LONG
             ).show()
+
+            // Randevu için hatırlatıcı işini zamanlama
+            scheduleReminder(selectedDate, selectedTime)
+
             // Randevu API'ye gönderilebilir
         } else {
             Toast.makeText(this, "Lütfen tüm alanları doldurun", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun scheduleReminder(date: String, time: String) {
+        // Randevu saatinden 2 saat önce hatırlatma yapmak için gecikme hesaplama
+        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val appointmentDateTime = formatter.parse("$date $time") ?: return
+        val reminderTime = appointmentDateTime.time - (2 * 60 * 60 * 1000) // 2 saat öncesi
+
+        // WorkRequest oluşturma
+        val data = Data.Builder()
+            .putString("message", "Randevunuz 2 saat içinde!") // Eğer ek veri gerekiyorsa
+            .build()
+
+        val reminderWorkRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
+            .setInitialDelay(reminderTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS) // Gecikme ayarı
+            .setInputData(data)
+            .build()
+
+        // WorkManager ile görevi başlatma
+        WorkManager.getInstance(this).enqueue(reminderWorkRequest)
     }
 
     // Paylaşım işlemini gerçekleştiren fonksiyon

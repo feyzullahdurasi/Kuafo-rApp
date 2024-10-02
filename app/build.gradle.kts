@@ -87,4 +87,6 @@ dependencies {
     implementation (libs.play.services.auth)
 
     implementation(libs.lottie)
+
+    implementation ("androidx.work:work-runtime-ktx:2.9.1")
 }
