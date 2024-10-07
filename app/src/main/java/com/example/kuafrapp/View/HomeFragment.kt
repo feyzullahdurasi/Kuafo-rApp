@@ -1,5 +1,7 @@
 package com.example.kuafrapp.View
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +23,6 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Argümanlardan hizmet tipini alıyoruz
         serviceType = arguments?.getString("SERVICE_TYPE")
     }
 
@@ -31,8 +31,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,23 +39,51 @@ class HomeFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        // Hizmet türüne göre verileri yenile
         serviceType?.let {
             viewModel.refreshData(it)
         }
 
-        binding.barberRecycleView.layoutManager = LinearLayoutManager(requireContext())
-        binding.barberRecycleView.adapter = barberRecyclerAdapter
+        setupViews()
+        setupRecyclerView()
+        observeLiveData()
+    }
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.barberRecycleView.visibility = View.GONE
-            binding.barberErrorMessage.visibility = View.GONE
-            binding.barberLoading.visibility = View.VISIBLE
-            viewModel.refreshDataFromInternet(serviceType)
-            binding.swipeRefreshLayout.isRefreshing = false
+    private fun setupViews() {
+        binding.filterButton.setOnClickListener {
+            // Handle filter view logic if needed
         }
 
-        observeLiveData()
+        binding.searchButton.setOnClickListener {
+            binding.filterBarLayout.visibility = View.GONE
+            binding.searchViewLayout.visibility = View.VISIBLE
+        }
+
+        binding.closeSearchView.setOnClickListener {
+            binding.filterBarLayout.visibility = View.VISIBLE
+            binding.searchViewLayout.visibility = View.GONE
+        }
+
+        binding.shareButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/feyzullahdurasi"))
+            startActivity(intent)
+        }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            refreshData()
+        }
+    }
+
+    private fun setupRecyclerView() {
+        binding.barberRecycleView.layoutManager = LinearLayoutManager(requireContext())
+        binding.barberRecycleView.adapter = barberRecyclerAdapter
+    }
+
+    private fun refreshData() {
+        binding.barberRecycleView.visibility = View.GONE
+        binding.barberErrorMessage.visibility = View.GONE
+        binding.barberLoading.visibility = View.VISIBLE
+        viewModel.refreshDataFromInternet(serviceType)
+        binding.swipeRefreshLayout.isRefreshing = false
     }
 
     private fun observeLiveData() {
@@ -66,21 +93,15 @@ class HomeFragment : Fragment() {
         }
 
         viewModel.barberError.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.barberErrorMessage.visibility = View.VISIBLE
-                binding.barberRecycleView.visibility = View.GONE
-            } else {
-                binding.barberErrorMessage.visibility = View.GONE
-            }
+            binding.barberErrorMessage.visibility = if (it) View.VISIBLE else View.GONE
+            binding.barberRecycleView.visibility = if (it) View.GONE else View.VISIBLE
         }
 
         viewModel.barberLoading.observe(viewLifecycleOwner) {
+            binding.barberLoading.visibility = if (it) View.VISIBLE else View.GONE
             if (it) {
-                binding.barberLoading.visibility = View.VISIBLE
                 binding.barberRecycleView.visibility = View.GONE
                 binding.barberErrorMessage.visibility = View.GONE
-            } else {
-                binding.barberLoading.visibility = View.GONE
             }
         }
     }
