@@ -187,14 +187,22 @@ class BarberDetailActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
 
+            // Start ReservationActivity and pass data
+            val intent = Intent(this, ReservationActivity::class.java).apply {
+                putExtra("selectedDate", selectedDate)
+                putExtra("selectedTime", selectedTime)
+                putExtra("selectedServices", selectedServices.joinToString(", "))
+                putExtra("totalPrice", totalPrice)
+            }
+            startActivity(intent)
+
             // Randevu için hatırlatıcı işini zamanlama
             scheduleReminder(selectedDate, selectedTime)
-
-            // Randevu API'ye gönderilebilir
         } else {
             Toast.makeText(this, "Lütfen tüm alanları doldurun", Toast.LENGTH_LONG).show()
         }
     }
+
 
     private fun scheduleReminder(date: String, time: String) {
         // Randevu saatinden 2 saat önce hatırlatma yapmak için gecikme hesaplama

@@ -19,6 +19,9 @@
         android:theme="@style/Theme.KuaförApp"
         tools:targetApi="31">
         <activity
+            android:name=".View.ReservationActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.FilterBarActivity"
             android:exported="false" />
         <activity
