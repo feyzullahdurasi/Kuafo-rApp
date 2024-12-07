@@ -4,12 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.kuafrapp.View.Info.InfoActivity
 import com.example.kuafrapp.View.login.LoginActivity
+import com.example.kuafrapp.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivitySplashBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.bakimText
 
         // Kullanıcının giriş yapıp yapmadığını kontrol et
         val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)

@@ -48,10 +48,10 @@
             android:name=".View.login.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".View.InfoActivity"
+            android:name=".View.Info.InfoActivity"
             android:exported="false" />
         <activity
-            android:name=".View.HomeFragment"
+            android:name=".View.Home.HomeFragment"
             android:exported="false" />
         <activity
             android:name=".View.BarberDetailActivity"

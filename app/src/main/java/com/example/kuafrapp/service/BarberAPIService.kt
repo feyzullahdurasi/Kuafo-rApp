@@ -1,18 +1,47 @@
 package com.example.kuafrapp.service
 
-import com.example.kuafrapp.model.Barber
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import android.app.AlertDialog
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import com.example.kuafrapp.R
 
-class BarberAPIService {
+sealed class APIError(val userErrorMessage: String) {
+    object InvalidURL : APIError("Geçersiz bir URL ile karşılaşıldı. Lütfen URL'yi kontrol edin.")
+    object InvalidResponse : APIError("Sunucu yanıtında bir hata oluştu.")
+    object UnableToComplete : APIError("İnternette bir hata oluştu. Lütfen daha sonra tekrar deneyin.")
+    object InvalidData : APIError("Geçersiz veri.")
+}
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://raw.githubusercontent.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(BarberAPI::class.java)
+class UserErrorDialog(private val context: Context) {
+    fun showErrorDialog(error: APIError, onDismiss: () -> Unit) {
+        // Inflate custom layout
+        val inflater = LayoutInflater.from(context)
+        val dialogView: View = inflater.inflate(R.layout.dialog_user_error, null)
 
-    suspend fun getData(): List<Barber> {
-        return retrofit.getBarber()
+        // Bind UI components
+        val errorTitle = dialogView.findViewById<TextView>(R.id.errorTitle)
+        val errorMessage = dialogView.findViewById<TextView>(R.id.errorMessage)
+        val dismissButton = dialogView.findViewById<Button>(R.id.dismissButton)
+
+        // Set error message and title
+        errorTitle.text = "Hata"
+        errorMessage.text = error.userErrorMessage
+
+        // Create dialog
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        // Dismiss button action
+        dismissButton.setOnClickListener {
+            dialog.dismiss()
+            onDismiss()
+        }
+
+        dialog.show()
     }
 }

@@ -1,14 +1,15 @@
 package com.example.kuafrapp.View
 
-import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.Switch
 import android.widget.Toast
@@ -18,11 +19,13 @@ import com.example.kuafrapp.R
 
 class SettingsFragment : Fragment() {
 
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private lateinit var notificationSwitch: Switch
-    private lateinit var themeRadioGroup: RadioGroup
+    private lateinit var changeThemeButton: Button
     private lateinit var languageSpinner: Spinner
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var updateInfoButton: Button
+    private lateinit var logoutButton: Button
+    private lateinit var feedbackButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,75 +33,78 @@ class SettingsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
-        // SharedPreferences kullanarak ayarları kaydetmek için
         sharedPreferences = requireActivity().getSharedPreferences("AppSettings", 0)
 
-        // Bildirim ayarları
+        // Bildirim Ayarları
         notificationSwitch = view.findViewById(R.id.notificationSwitch)
-        val notificationsEnabled = sharedPreferences.getBoolean("notifications", true)
-        notificationSwitch.isChecked = notificationsEnabled
-
+        notificationSwitch.isChecked = sharedPreferences.getBoolean("notifications", false)
         notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("notifications", isChecked)
-            editor.apply()
-            Toast.makeText(context, if (isChecked) "Bildirimler Açık" else "Bildirimler Kapalı", Toast.LENGTH_SHORT).show()
+            sharedPreferences.edit().putBoolean("notifications", isChecked).apply()
+            Toast.makeText(context, if (isChecked) "Notifications Enabled" else "Notifications Disabled", Toast.LENGTH_SHORT).show()
         }
 
-        // Tema ayarları
-        themeRadioGroup = view.findViewById(R.id.themeRadioGroup)
-        val isDarkMode = sharedPreferences.getBoolean("darkMode", false)
-        themeRadioGroup.check(if (isDarkMode) R.id.darkThemeButton else R.id.lightThemeButton)
+        // Feedback Button
+        feedbackButton = view.findViewById(R.id.feedbackButton)
+        feedbackButton.setOnClickListener {
+            sendFeedback()
+        }
 
-        themeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.lightThemeButton -> setThemeMode(AppCompatDelegate.MODE_NIGHT_NO)
-                R.id.darkThemeButton -> setThemeMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }
+        // Tema Seçimi
+        changeThemeButton = view.findViewById(R.id.changeThemeButton)
+        changeThemeButton.setOnClickListener {
+            toggleTheme()
         }
 
         // Dil Seçimi
         languageSpinner = view.findViewById(R.id.languageSpinner)
         val languages = resources.getStringArray(R.array.languages)
-        val currentLanguage = sharedPreferences.getString("language", "Türkçe")
-        languageSpinner.setSelection(languages.indexOf(currentLanguage))
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, languages)
+        languageSpinner.adapter = adapter
 
+        languageSpinner.setSelection(languages.indexOf(sharedPreferences.getString("language", "English")))
         languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedLanguage = languages[position]
-                val editor = sharedPreferences.edit()
-                editor.putString("language", selectedLanguage)
-                editor.apply()
-                Toast.makeText(context, "Dil değiştirildi: $selectedLanguage", Toast.LENGTH_SHORT).show()
+                sharedPreferences.edit().putString("language", languages[position]).apply()
+                Toast.makeText(context, "Language set to: ${languages[position]}", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Boş bırakılabilir
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // Gizlilik politikası butonu
-        val privacyPolicyButton: Button = view.findViewById(R.id.privacyPolicyButton)
-        privacyPolicyButton.setOnClickListener {
-            // Gizlilik politikası sayfasına yönlendirecek kod
-            Toast.makeText(context, "Gizlilik Politikası açıldı", Toast.LENGTH_SHORT).show()
+        // Kullanıcı Bilgilerini Güncelle
+        updateInfoButton = view.findViewById(R.id.updateInfoButton)
+        updateInfoButton.setOnClickListener {
+            // Navigate to User Info Screen
         }
 
-        // Hakkında butonu
-        val aboutButton: Button = view.findViewById(R.id.aboutButton)
-        aboutButton.setOnClickListener {
-            // Uygulama hakkında bilgi gösterecek kod
-            Toast.makeText(context, "Uygulama hakkında bilgi", Toast.LENGTH_SHORT).show()
+        // Çıkış
+        logoutButton = view.findViewById(R.id.logoutButton)
+        logoutButton.setOnClickListener {
+            logout()
         }
 
         return view
     }
 
-    private fun setThemeMode(mode: Int) {
-        AppCompatDelegate.setDefaultNightMode(mode)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("darkMode", mode == AppCompatDelegate.MODE_NIGHT_YES)
-        editor.apply()
-        Toast.makeText(context, if (mode == AppCompatDelegate.MODE_NIGHT_YES) "Koyu Tema" else "Açık Tema", Toast.LENGTH_SHORT).show()
+    private fun sendFeedback() {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("info@businessowner.com"))
+            putExtra(Intent.EXTRA_SUBJECT, "Feedback")
+        }
+        startActivity(intent)
+    }
+
+    private fun toggleTheme() {
+        val isDarkMode = sharedPreferences.getBoolean("darkMode", false)
+        val newMode = if (isDarkMode) AppCompatDelegate.MODE_NIGHT_NO else AppCompatDelegate.MODE_NIGHT_YES
+        AppCompatDelegate.setDefaultNightMode(newMode)
+        sharedPreferences.edit().putBoolean("darkMode", !isDarkMode).apply()
+        Toast.makeText(context, if (!isDarkMode) "Dark Mode Enabled" else "Light Mode Enabled", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun logout() {
+        sharedPreferences.edit().clear().apply()
+        Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show()
     }
 }

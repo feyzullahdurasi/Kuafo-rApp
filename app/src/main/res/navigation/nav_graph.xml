@@ -7,7 +7,7 @@
     app:startDestination="@id/homeActivity">
     <fragment
         android:id="@+id/homeActivity"
-        android:name="com.example.kuafrapp.View.HomeFragment"
+        android:name="com.example.kuafrapp.View.Home.HomeFragment"
         android:label="activity_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -18,7 +18,7 @@
         android:id="@+id/barberDetailActivity"
         android:name="com.example.kuafrapp.View.BarberDetailActivity"
         android:label="activity_barber_detail"
-        tools:layout="@layout/activity_barber_detail" >
+        tools:layout="@layout/activity_service_detail" >
         <argument
             android:name="barberId"
             app:argType="integer" />

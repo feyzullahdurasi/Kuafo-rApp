@@ -17,6 +17,15 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/scissors_anim" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bakim"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textAlignment="center">
+    </TextView>
+
     <!-- Login Card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/loginCard"
@@ -74,7 +83,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginTop="16dp"
                 android:text="Giriş Yap"
                 android:textSize="16sp"
@@ -86,7 +95,7 @@
                 android:id="@+id/loginWithGoogleButton"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginTop="12dp"
                 android:text="Google ile Giriş Yap"
                 android:textColor="@color/black"

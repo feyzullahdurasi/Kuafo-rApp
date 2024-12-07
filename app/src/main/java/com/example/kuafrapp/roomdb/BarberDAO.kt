@@ -1,5 +1,5 @@
 package com.example.kuafrapp.roomdb
-
+/*
 import com.example.kuafrapp.model.Barber
 import androidx.room.Dao
 import androidx.room.Insert
@@ -21,3 +21,4 @@ interface BarberDAO {
     @Query("SELECT * FROM barber WHERE uuid = :barberId")
     suspend fun getBarber(barberId: Int): Barber?
 }
+*/

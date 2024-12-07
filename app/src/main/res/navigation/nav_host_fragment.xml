@@ -22,6 +22,6 @@
 
     <activity
         android:id="@+id/infoActivity"
-        android:name="com.example.kuafrapp.View.InfoActivity"
+        android:name="com.example.kuafrapp.View.Info.InfoActivity"
         tools:layout="@layout/activity_info" />
 </navigation>

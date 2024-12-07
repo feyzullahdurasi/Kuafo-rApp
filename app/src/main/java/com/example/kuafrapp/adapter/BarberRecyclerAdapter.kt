@@ -1,16 +1,17 @@
 package com.example.kuafrapp.adapter
 
+/*
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kuafrapp.View.BarberDetailActivity
 import com.example.kuafrapp.databinding.BarberRecyclerRowBinding
-import com.example.kuafrapp.model.Barber
+import com.example.kuafrapp.model.Bakim
 import com.example.kuafrapp.util.dowloandImage
 import com.example.kuafrapp.util.makePlaceHolder
 
-class BarberRecyclerAdapter(val barberList: ArrayList<Barber>) : RecyclerView.Adapter<BarberRecyclerAdapter.BarberViewHolder>() {
+class BarberRecyclerAdapter(val barberList: ArrayList<Bakim>) : RecyclerView.Adapter<BarberRecyclerAdapter.BarberViewHolder>() {
 
     class BarberViewHolder(val binding: BarberRecyclerRowBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -44,6 +45,6 @@ class BarberRecyclerAdapter(val barberList: ArrayList<Barber>) : RecyclerView.Ad
         holder.binding.imageView.dowloandImage(barberList[position].barberImage, makePlaceHolder(holder.itemView.context))
     }
 
-}
+}*/
 
 
