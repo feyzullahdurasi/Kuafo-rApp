@@ -1,0 +1,89 @@
+package com.example.kuafrapp.roomdb
+
+import android.content.Context
+import androidx.room.*
+import com.example.kuafrapp.model.*
+import java.util.*
+
+@Database(
+    entities = [
+        Business::class,
+        Service::class,
+        ServiceFeature::class,
+        Reservation::class
+    ],
+    version = 1
+)
+@TypeConverters(Converters::class)
+abstract class BarberDatabase : RoomDatabase() {
+    abstract fun businessDao(): BusinessDao
+    abstract fun serviceDao(): ServiceDao
+    abstract fun reservationDao(): ReservationDao
+
+    companion object {
+        @Volatile
+        private var instance: BarberDatabase? = null
+
+        fun getDatabase(context: Context): BarberDatabase {
+            return instance ?: synchronized(this) {
+                Room.databaseBuilder(
+                    context.applicationContext,
+                    BarberDatabase::class.java,
+                    "barber_database"
+                )
+                .fallbackToDestructiveMigration()
+                .build()
+                .also { instance = it }
+            }
+        }
+    }
+}
+
+class Converters {
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
+    }
+}
+
+// Dao interfaceleri ekleyelim
+@Dao
+interface BusinessDao {
+    @Query("SELECT * FROM businesses")
+    suspend fun getAllBusinesses(): List<Business>
+
+    @Query("SELECT * FROM businesses WHERE id = :id")
+    suspend fun getBusinessById(id: Int): Business?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertBusiness(business: Business)
+
+    @Delete
+    suspend fun deleteBusiness(business: Business)
+}
+
+@Dao
+interface ServiceDao {
+    @Query("SELECT * FROM services WHERE businessId = :businessId")
+    suspend fun getServicesForBusiness(businessId: Int): List<Service>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertService(service: Service)
+}
+
+@Dao
+interface ReservationDao {
+    @Query("SELECT * FROM reservations WHERE userId = :userId")
+    suspend fun getUserReservations(userId: Int): List<Reservation>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertReservation(reservation: Reservation)
+
+    @Query("DELETE FROM reservations WHERE id = :id")
+    suspend fun cancelReservation(id: String)
+}

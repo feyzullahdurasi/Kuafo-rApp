@@ -1,14 +1,21 @@
 package com.example.kuafrapp.View.Home
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.example.kuafrapp.model.Business
-import com.example.kuafrapp.model.MockData
 import com.example.kuafrapp.model.Service
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.launch
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val repository: BakimRepository
+) : ViewModel() {
+
+    private val _services = MutableLiveData<APIResult<List<Service>>>()
+    val services: LiveData<APIResult<List<Service>>> = _services
+
     private val _businessLiveData = MutableLiveData<Business?>()
     val businessLiveData: LiveData<Business?> = _businessLiveData
 
@@ -29,6 +36,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _filteredServices = MutableLiveData<List<Service>>()
     val filteredServices: LiveData<List<Service>> get() = _filteredServices
+
+    private val _businesses = MutableLiveData<APIResult<List<Business>>>()
+    val businesses: LiveData<APIResult<List<Business>>> = _businesses
 
     init {
         refreshData()
@@ -77,6 +87,37 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             "4.8" // Örnek bir rating
         } else {
             "Price varies"
+        }
+    }
+
+    fun loadServices() {
+        viewModelScope.launch {
+            _services.value = APIResult.Loading
+            try {
+                val result = repository.getServices()
+                _services.value = result
+            } catch (e: Exception) {
+                _services.value = APIResult.Error(APIError.UnableToComplete)
+            }
+        }
+    }
+
+    fun searchServices(query: String) {
+        viewModelScope.launch {
+            _services.value = APIResult.Loading
+            try {
+                val result = repository.searchServices(query)
+                _services.value = result
+            } catch (e: Exception) {
+                _services.value = APIResult.Error(APIError.UnableToComplete)
+            }
+        }
+    }
+
+    fun loadBusinesses() {
+        viewModelScope.launch {
+            _businesses.value = APIResult.Loading
+            _businesses.value = repository.getBusinesses()
         }
     }
 }

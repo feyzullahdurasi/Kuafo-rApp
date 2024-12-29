@@ -1,34 +1,44 @@
 package com.example.kuafrapp.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kuafrapp.R
-import org.w3c.dom.Comment
+import com.example.kuafrapp.databinding.ItemCommentBinding
 
-class CommentsAdapter(private val comments: List<Comment>) :
-    RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>() {
-
-    class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val usernameText: TextView = view.findViewById(R.id.usernameText)
-        val commentText: TextView = view.findViewById(R.id.commentText)
-        val ratingText: TextView = view.findViewById(R.id.ratingText)
+class CommentsAdapter : ListAdapter<UserComment, CommentsAdapter.CommentViewHolder>(CommentDiffCallback()) {
+    
+    class CommentViewHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(comment: UserComment) {
+            binding.apply {
+                usernameText.text = comment.username
+                commentText.text = comment.commentText
+                ratingBar.rating = comment.rating.toFloat()
+                commentDate.text = comment.createdAt?.formatToString()
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_comment, parent, false)
-        return CommentViewHolder(view)
+        return CommentViewHolder(
+            ItemCommentBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        val comment = comments[position]
-        /*holder.usernameText.text = comment.username
-        holder.commentText.text = comment.commentText
-        holder.ratingText.text = "${comment.rating}/5"*/
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount() = comments.size
+    class CommentDiffCallback : DiffUtil.ItemCallback<UserComment>() {
+        override fun areItemsTheSame(oldItem: UserComment, newItem: UserComment) = 
+            oldItem.id == newItem.id
+        
+        override fun areContentsTheSame(oldItem: UserComment, newItem: UserComment) = 
+            oldItem == newItem
+    }
 }

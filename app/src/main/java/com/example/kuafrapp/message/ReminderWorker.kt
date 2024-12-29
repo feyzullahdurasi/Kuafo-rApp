@@ -6,16 +6,28 @@ import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import com.example.kuafrapp.R
 
-class ReminderWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
+class ReminderWorker(
+    context: Context,
+    workerParams: WorkerParameters
+) : CoroutineWorker(context, workerParams) {
 
-    override fun doWork(): Result {
-        // Hatırlatma mesajını göstermek için bir notification gönderiyoruz
-        showNotification("Randevu Hatırlatıcısı", "Randevunuz 2 saat içinde!")
-        return Result.success()
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+        try {
+            val reservationId = inputData.getString(KEY_RESERVATION_ID)
+            val title = inputData.getString(KEY_TITLE) ?: "Randevu Hatırlatıcısı"
+            val message = inputData.getString(KEY_MESSAGE) ?: "Randevunuz yaklaşıyor!"
+
+            showNotification(title, message)
+            Result.success()
+        } catch (e: Exception) {
+            Result.failure()
+        }
     }
 
     private fun showNotification(title: String, message: String) {
@@ -53,5 +65,11 @@ class ReminderWorker(context: Context, workerParams: WorkerParameters) : Worker(
                 applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    companion object {
+        const val KEY_RESERVATION_ID = "reservation_id"
+        const val KEY_TITLE = "title"
+        const val KEY_MESSAGE = "message"
     }
 }

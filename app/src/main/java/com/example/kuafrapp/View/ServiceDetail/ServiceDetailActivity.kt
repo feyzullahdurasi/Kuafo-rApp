@@ -22,8 +22,8 @@ import java.util.Locale
 class ServiceDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityServiceDetailBinding
     private lateinit var viewModel: ServiceDetailViewModel
-    private lateinit var service: Service
-    private lateinit var business: Business
+    private var serviceId: Int = 0
+    private var businessId: Int = 0
     private val selectedFeatures = mutableSetOf<ServiceFeature>()
     private val availableHours = (9..18).map { String.format("%02d:00", it) }
     private var totalPrice = 0
@@ -33,38 +33,37 @@ class ServiceDetailActivity : AppCompatActivity() {
         binding = ActivityServiceDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Intent'ten service ve business bilgilerini al
-        service = intent.getParcelableExtra("service")!!
-        business = intent.getParcelableExtra("business")!!
+        // ID'leri intent'ten al
+        serviceId = intent.getIntExtra("serviceId", 0)
+        businessId = intent.getIntExtra("businessId", 0)
 
         viewModel = ViewModelProvider(this)[ServiceDetailViewModel::class.java]
 
-        setupUI()
         setupObservers()
-        setupListeners()
+        viewModel.loadServiceDetails(serviceId, businessId)
     }
 
-    private fun setupUI() {
+    private fun setupUI(service: Service) {
         // Servis bilgileri
-        binding.businessName.text = business.businessName
-        binding.businessAddress.text = business.businessAddress
-        binding.businessPrice.text = business.businessPrice
-        binding.businessHours.text = business.businessHours
+        binding.businessName.text = service.business.businessName
+        binding.businessAddress.text = service.business.businessAddress
+        binding.businessPrice.text = service.business.businessPrice
+        binding.businessHours.text = service.business.businessHours
 
         // Servis resmini yükleme
         Glide.with(this)
-            .load(business.businessImage)
+            .load(service.business.businessImage)
             .placeholder(R.drawable.barber_image_bg)
             .into(binding.businessImage)
 
         // Hizmet özellikleri
-        setupServiceFeatures()
+        setupServiceFeatures(service)
 
         // Yorumları ayarlama
         setupComments()
     }
 
-    private fun setupServiceFeatures() {
+    private fun setupServiceFeatures(service: Service) {
         binding.servicesContainer.removeAllViews()
         service.serviceFeature.forEach { feature ->
             val checkBox = CheckBox(this).apply {
@@ -91,6 +90,37 @@ class ServiceDetailActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
+        viewModel.serviceDetails.observe(this) { result ->
+            when (result) {
+                is APIResult.Success -> {
+                    setupUI(result.data)
+                    setupListeners()
+                }
+                is APIResult.Error -> {
+                    Toast.makeText(this, result.error.userErrorMessage, Toast.LENGTH_LONG).show()
+                }
+                is APIResult.Loading -> {
+                    // Show loading state
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        viewModel.reservationResult.observe(this) { result ->
+            when (result) {
+                is APIResult.Success -> {
+                    Toast.makeText(this, "Rezervasyon başarıyla oluşturuldu", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                is APIResult.Error -> {
+                    Toast.makeText(this, result.error.userErrorMessage, Toast.LENGTH_LONG).show()
+                }
+                is APIResult.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+            }
+        }
+
         viewModel.showAlert.observe(this) { show ->
             if (show) {
                 AlertDialog.Builder(this)

@@ -1,50 +1,75 @@
 package com.example.kuafrapp.adapter
 
-/*
+
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.kuafrapp.R
 import com.example.kuafrapp.View.BarberDetailActivity
 import com.example.kuafrapp.databinding.BarberRecyclerRowBinding
 import com.example.kuafrapp.model.Bakim
+import com.example.kuafrapp.model.Business
 import com.example.kuafrapp.util.dowloandImage
 import com.example.kuafrapp.util.makePlaceHolder
 
-class BarberRecyclerAdapter(val barberList: ArrayList<Bakim>) : RecyclerView.Adapter<BarberRecyclerAdapter.BarberViewHolder>() {
+class BarberRecyclerAdapter(
+    private val onBarberClick: (Business) -> Unit
+) : ListAdapter<Business, BarberRecyclerAdapter.BarberViewHolder>(BarberDiffCallback()) {
 
-    class BarberViewHolder(val binding: BarberRecyclerRowBinding) : RecyclerView.ViewHolder(binding.root)
+    class BarberViewHolder(
+        private val binding: BarberRecyclerRowBinding,
+        private val onBarberClick: (Business) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+        
+        fun bind(business: Business) {
+            binding.apply {
+                barberName.text = business.name
+                localeName.text = business.address
+                ratingBar.rating = business.rating ?: 0f
+                priceText.text = business.price
+
+                // Glide ile image loading
+                Glide.with(imageView.context)
+                    .load(business.image)
+                    .placeholder(R.drawable.placeholder_image)
+                    .error(R.drawable.error_image)
+                    .into(imageView)
+
+                root.setOnClickListener { 
+                    onBarberClick(business)
+                }
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BarberViewHolder {
-        val binding = BarberRecyclerRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BarberViewHolder(binding)
-    }
-
-    override fun getItemCount(): Int {
-        return barberList.size
-    }
-
-    fun updateBarberList(newBarberList: List<Barber>) {
-        barberList.clear()
-        barberList.addAll(newBarberList)
-        notifyDataSetChanged()
+        return BarberViewHolder(
+            BarberRecyclerRowBinding.inflate(
+                LayoutInflater.from(parent.context), 
+                parent, 
+                false
+            ),
+            onBarberClick
+        )
     }
 
     override fun onBindViewHolder(holder: BarberViewHolder, position: Int) {
-        val barber = barberList[position]
-        holder.binding.barberName.text = barber.barberName
-        holder.binding.localeName.text = barber.localeName
-
-        holder.itemView.setOnClickListener {
-            // Activity'ye yönlendirme yap
-            val intent = Intent(holder.itemView.context, BarberDetailActivity::class.java)
-            intent.putExtra("barberId", barber.uuid)
-            holder.itemView.context.startActivity(intent)
-        }
-
-        holder.binding.imageView.dowloandImage(barberList[position].barberImage, makePlaceHolder(holder.itemView.context))
+        holder.bind(getItem(position))
     }
 
-}*/
+    private class BarberDiffCallback : DiffUtil.ItemCallback<Business>() {
+        override fun areItemsTheSame(oldItem: Business, newItem: Business): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Business, newItem: Business): Boolean {
+            return oldItem == newItem
+        }
+    }
+}
 
 
