@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
         setupSearchAndFilterControls()
         
         // Servis verilerini yükle
-        viewModel.loadServices()
+        viewModel.loadBusinesses()
     }
 
     private fun setupRecyclerView() {
@@ -56,11 +56,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.services.observe(viewLifecycleOwner) { result ->
+        viewModel.businesses.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is APIResult.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    servicesAdapter.submitList(result.data)
+                    servicesAdapter.submitList(result.data.flatMap { it.services })
                 }
                 is APIResult.Error -> {
                     binding.progressBar.visibility = View.GONE

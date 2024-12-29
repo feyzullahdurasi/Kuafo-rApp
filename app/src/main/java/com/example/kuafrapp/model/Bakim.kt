@@ -1,5 +1,8 @@
 package com.example.kuafrapp.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 import java.util.UUID
@@ -56,23 +59,18 @@ data class DailyRevenueItem(
     val revenue: Double
 )
 
+@Entity(tableName = "businesses")
 data class Business(
-    @SerializedName("id")
+    @PrimaryKey 
     val id: Int,
-    @SerializedName("name")
     val name: String,
-    @SerializedName("image")
-    val image: String? = null,
-    @SerializedName("address")
+    val image: String?,
     val address: String,
-    @SerializedName("phone")
     val phone: String,
-    @SerializedName("hours")
     val hours: String,
-    @SerializedName("price")
     val price: String,
-    @SerializedName("location")
-    val location: Location
+    val location: String,
+    val services: String
 )
 
 enum class ServiceType(val description: String) {
@@ -87,33 +85,36 @@ enum class ServiceType(val description: String) {
     EVENT_SPACES_RENTAL("event_spaces_rental");
 }
 
+@Entity(tableName = "services")
 data class Service(
+    @PrimaryKey 
     val id: Int,
     val serviceType: String,
-    val serviceFeature: List<ServiceFeature>
+    @ColumnInfo(name = "service_feature") 
+    val serviceFeature: String // You'll need a TypeConverter for List
 )
 
+@Entity(tableName = "service_features")
 data class ServiceFeature(
+    @PrimaryKey 
     val id: Int,
     val name: String,
     val price: Double,
     val duration: Int
 )
 
+@Entity(tableName = "reservations")
 data class Reservation(
-    @SerializedName("id")
-    val id: String = UUID.randomUUID().toString(),
-    @SerializedName("date")
+    @PrimaryKey
+    val id: String,
     val date: String,
-    @SerializedName("time")
     val time: String,
-    @SerializedName("status")
-    val status: ReservationStatus,
-    @SerializedName("userId")
+    val status: String,
+    @ColumnInfo(name = "user_id")
     val userId: Int,
-    @SerializedName("businessId")
+    @ColumnInfo(name = "business_id")
     val businessId: Int,
-    @SerializedName("serviceFeatureId")
+    @ColumnInfo(name = "service_feature_id")
     val serviceFeatureId: Int
 )
 

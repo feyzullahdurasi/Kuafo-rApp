@@ -4,15 +4,19 @@ import android.content.Context
 import androidx.room.*
 import com.example.kuafrapp.model.*
 import java.util.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 @Database(
     entities = [
         Business::class,
         Service::class,
         ServiceFeature::class,
-        Reservation::class
+        Reservation::class,
+        BusinessService::class
     ],
-    version = 1
+    version = 3,
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class BarberDatabase : RoomDatabase() {
@@ -49,6 +53,19 @@ class Converters {
     fun dateToTimestamp(date: Date?): Long? {
         return date?.time
     }
+
+    @TypeConverter
+    fun fromServiceFeatureList(value: List<ServiceFeature>): String {
+        return Gson().toJson(value)
+    }
+
+    @TypeConverter
+    fun toServiceFeatureList(value: String): List<ServiceFeature> {
+        val type = object : TypeToken<List<ServiceFeature>>() {}.type
+        return Gson().fromJson(value, type)
+    }
+
+    // Add other converters as needed for your custom types
 }
 
 // Dao interfaceleri ekleyelim
@@ -69,7 +86,10 @@ interface BusinessDao {
 
 @Dao
 interface ServiceDao {
-    @Query("SELECT * FROM services WHERE businessId = :businessId")
+    @Query("SELECT * FROM services")
+    suspend fun getAllServices(): List<Service>
+
+    @Query("SELECT * FROM services s INNER JOIN businesses_services bs ON s.id = bs.service_id WHERE bs.business_id = :businessId")
     suspend fun getServicesForBusiness(businessId: Int): List<Service>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -87,3 +107,24 @@ interface ReservationDao {
     @Query("DELETE FROM reservations WHERE id = :id")
     suspend fun cancelReservation(id: String)
 }
+
+@Entity(
+    tableName = "businesses_services",
+    primaryKeys = ["business_id", "service_id"],
+    foreignKeys = [
+        ForeignKey(
+            entity = Business::class,
+            parentColumns = ["id"],
+            childColumns = ["business_id"]
+        ),
+        ForeignKey(
+            entity = Service::class,
+            parentColumns = ["id"],
+            childColumns = ["service_id"]
+        )
+    ]
+)
+data class BusinessService(
+    @ColumnInfo(name = "business_id") val businessId: Int,
+    @ColumnInfo(name = "service_id") val serviceId: Int
+)

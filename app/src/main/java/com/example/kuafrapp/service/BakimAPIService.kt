@@ -12,6 +12,7 @@ import com.example.kuafrapp.R
 import com.example.kuafrapp.model.Business
 import com.example.kuafrapp.model.Reservation
 import com.example.kuafrapp.model.Service
+import javax.inject.Inject
 
 sealed class APIError(val userErrorMessage: String) {
     object InvalidURL : APIError("Geçersiz bir URL ile karşılaşıldı. Lütfen URL'yi kontrol edin.")

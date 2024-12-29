@@ -2,22 +2,39 @@ package com.example.kuafrapp.repository
 
 import com.example.kuafrapp.model.Business
 import com.example.kuafrapp.model.Service
+import com.example.kuafrapp.roomdb.BarberDatabase
+import com.example.kuafrapp.service.APIError
 import com.example.kuafrapp.service.ApiResult
 import com.example.kuafrapp.service.ApiService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class BakimRepository @Inject constructor(
-    private val api: ApiService
+    private val api: ApiService,
+    private val db: BarberDatabase
 ) {
-    suspend fun getBusinesses(): ApiResult<List<Business>> {
-        return try {
+    suspend fun getBusinesses(): ApiResult<List<Business>> = withContext(Dispatchers.IO) {
+        try {
+            // Önce lokalden veri çek
+            val localData = db.businessDao().getAllBusinesses()
+            if (localData.isNotEmpty()) {
+                return@withContext ApiResult.Success(localData)
+            }
+
+            // API'den veri çek
             val response = api.getBusinesses()
             if (response.isSuccessful) {
-                ApiResult.Success(response.body()!!)
+                response.body()?.let { businesses ->
+                    // Verileri lokale kaydet
+                    db.businessDao().insertAll(businesses)
+                    ApiResult.Success(businesses)
+                } ?: ApiResult.Error(APIError.InvalidData)
             } else {
-                ApiResult.Error(ApiError.InvalidResponse)
+                ApiResult.Error(APIError.InvalidResponse)
             }
         } catch (e: Exception) {
-            ApiResult.Error(ApiError.UnableToComplete)
+            ApiResult.Error(APIError.UnableToComplete)
         }
     }
 

@@ -31,13 +31,13 @@ class ServicesAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(service: Service) {
             binding.apply {
-                serviceName.text = service.serviceType
-                serviceLocation.text = "Salon Adresi" // Business adresinden alınabilir
-                serviceRating.text = "4.8" // Sabit rating, gerekirse dinamik yapılabilir
-
-                root.setOnClickListener {
-                    onItemClick(service)
-                }
+                serviceName.text = service.name
+                serviceFeatures.text = service.serviceFeature
+                    .joinToString(", ") { it.name }
+                servicePrice.text = service.serviceFeature
+                    .sumOf { it.price }.toString() + " TL"
+                
+                root.setOnClickListener { onItemClick(service) }
             }
         }
     }

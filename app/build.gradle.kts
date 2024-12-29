@@ -18,6 +18,23 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true",
+                    "room.expandProjection" to "true",
+                    "room.exportSchema" to "true"
+                )
+            }
+        }
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+            arg("room.incremental", "true")
+            arg("room.expandProjection", "true")
+        }
     }
 
     buildTypes {
@@ -68,10 +85,14 @@ dependencies {
     implementation(libs.play.services.auth)
 
     // Room Database
-    implementation(libs.androidx.room.runtime)
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    //kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    testImplementation("androidx.room:room-testing:$room_version")
     implementation(libs.androidx.preference.ktx)
     ksp(libs.androidx.room.room.compiler)
-    implementation(libs.androidx.room.ktx)
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
@@ -93,4 +114,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation ("com.squareup.okhttp3:okhttp:4.11.0") // OkHttp kütüphanesi
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0") // Logging Interceptor
+    implementation ("com.google.dagger:hilt-android:2.48")
+
+    // Kotlin
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 }

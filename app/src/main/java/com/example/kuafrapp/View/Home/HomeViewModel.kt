@@ -37,8 +37,8 @@ class HomeViewModel @Inject constructor(
     private val _filteredServices = MutableLiveData<List<Service>>()
     val filteredServices: LiveData<List<Service>> get() = _filteredServices
 
-    private val _businesses = MutableLiveData<APIResult<List<Business>>>()
-    val businesses: LiveData<APIResult<List<Business>>> = _businesses
+    private val _businesses = MutableLiveData<ApiResult<List<Business>>>()
+    val businesses: LiveData<ApiResult<List<Business>>> = _businesses
 
     init {
         refreshData()
@@ -116,7 +116,7 @@ class HomeViewModel @Inject constructor(
 
     fun loadBusinesses() {
         viewModelScope.launch {
-            _businesses.value = APIResult.Loading
+            _businesses.value = ApiResult.Loading
             _businesses.value = repository.getBusinesses()
         }
     }
