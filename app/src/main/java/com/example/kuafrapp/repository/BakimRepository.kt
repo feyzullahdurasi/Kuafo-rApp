@@ -16,17 +16,14 @@ class BakimRepository @Inject constructor(
 ) {
     suspend fun getBusinesses(): ApiResult<List<Business>> = withContext(Dispatchers.IO) {
         try {
-            // Önce lokalden veri çek
             val localData = db.businessDao().getAllBusinesses()
             if (localData.isNotEmpty()) {
                 return@withContext ApiResult.Success(localData)
             }
 
-            // API'den veri çek
             val response = api.getBusinesses()
             if (response.isSuccessful) {
                 response.body()?.let { businesses ->
-                    // Verileri lokale kaydet
                     db.businessDao().insertAll(businesses)
                     ApiResult.Success(businesses)
                 } ?: ApiResult.Error(APIError.InvalidData)

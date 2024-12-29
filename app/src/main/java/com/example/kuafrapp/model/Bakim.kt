@@ -2,6 +2,8 @@ package com.example.kuafrapp.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.util.Date
@@ -87,11 +89,11 @@ enum class ServiceType(val description: String) {
 
 @Entity(tableName = "services")
 data class Service(
-    @PrimaryKey 
+    @PrimaryKey
     val id: Int,
     val serviceType: String,
-    @ColumnInfo(name = "service_feature") 
-    val serviceFeature: String // You'll need a TypeConverter for List
+    @ColumnInfo(name = "service_feature")
+    val serviceFeature: String
 )
 
 @Entity(tableName = "service_features")
@@ -116,6 +118,30 @@ data class Reservation(
     val businessId: Int,
     @ColumnInfo(name = "service_feature_id")
     val serviceFeatureId: Int
+)
+
+@Entity(
+    tableName = "businesses_services",
+    primaryKeys = ["business_id", "service_id"],
+    foreignKeys = [
+        ForeignKey(
+            entity = Business::class,
+            parentColumns = ["id"],
+            childColumns = ["business_id"]
+        ),
+        ForeignKey(
+            entity = Service::class,
+            parentColumns = ["id"],
+            childColumns = ["service_id"]
+        )
+    ],
+    indices = [
+        Index(value = ["service_id"])
+    ]
+)
+data class BusinessService(
+    @ColumnInfo(name = "business_id") val businessId: Int,
+    @ColumnInfo(name = "service_id") val serviceId: Int
 )
 
 enum class ReservationStatus {

@@ -86,10 +86,8 @@ interface BusinessDao {
 
 @Dao
 interface ServiceDao {
-    @Query("SELECT * FROM services")
-    suspend fun getAllServices(): List<Service>
-
-    @Query("SELECT * FROM services s INNER JOIN businesses_services bs ON s.id = bs.service_id WHERE bs.business_id = :businessId")
+    @Query("SELECT s.* FROM services s INNER JOIN businesses_services bs ON s.id = bs.service_id WHERE bs.business_id = :businessId")
+    @RewriteQueriesToDropUnusedColumns
     suspend fun getServicesForBusiness(businessId: Int): List<Service>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -98,7 +96,7 @@ interface ServiceDao {
 
 @Dao
 interface ReservationDao {
-    @Query("SELECT * FROM reservations WHERE userId = :userId")
+    @Query("SELECT * FROM reservations WHERE user_id = :userId")
     suspend fun getUserReservations(userId: Int): List<Reservation>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

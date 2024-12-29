@@ -28,13 +28,13 @@ interface ApiService {
     @GET("/bakim")
     suspend fun getBakim(): List<Bakim>
 
-    @GET("/businesses")
+    @GET("businesses")
     suspend fun getBusinesses(): Response<List<Business>>
     
-    @GET("/businesses/{id}")
+    @GET("businesses/{id}")
     suspend fun getBusinessById(@Path("id") id: Int): Response<Business>
     
-    @GET("/businesses/{id}/services")
+    @GET("businesses/{id}/services")
     suspend fun getBusinessServices(@Path("id") id: Int): Response<List<Service>>
     
     @GET("/services")
