@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "6c65627c2bfb29215f5e8514300151c9",
+    "identityHash": "5ba3dcb4b778eaba1a10de5f1bcc18ee",
     "entities": [
       {
         "tableName": "businesses",
@@ -74,7 +74,7 @@
       },
       {
         "tableName": "services",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `serviceType` TEXT NOT NULL, `service_feature` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `serviceType` TEXT NOT NULL, `serviceFeature` TEXT NOT NULL, `business` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -90,7 +90,13 @@
           },
           {
             "fieldPath": "serviceFeature",
-            "columnName": "service_feature",
+            "columnName": "serviceFeature",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "business",
+            "columnName": "business",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -252,7 +258,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6c65627c2bfb29215f5e8514300151c9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5ba3dcb4b778eaba1a10de5f1bcc18ee')"
     ]
   }
 }

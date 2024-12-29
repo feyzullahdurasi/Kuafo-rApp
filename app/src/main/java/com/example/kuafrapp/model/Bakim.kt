@@ -92,8 +92,8 @@ data class Service(
     @PrimaryKey
     val id: Int,
     val serviceType: String,
-    @ColumnInfo(name = "service_feature")
-    val serviceFeature: String
+    val serviceFeature: List<ServiceFeature>,
+    val business: Business
 )
 
 @Entity(tableName = "service_features")
@@ -175,4 +175,13 @@ data class Review(
     val comment: String? = null,
     @SerializedName("createdAt")
     val createdAt: Date = Date()
+)
+
+data class ReservationRequest(
+    val serviceId: Int,
+    val businessId: Int,
+    val userId: Int,
+    val date: String,
+    val time: String,
+    val selectedFeatures: List<ServiceFeature>
 )

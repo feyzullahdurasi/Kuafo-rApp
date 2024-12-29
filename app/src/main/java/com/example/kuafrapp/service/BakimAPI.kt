@@ -15,6 +15,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Body
+import retrofit2.http.Query
 import retrofit2.Response
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -40,6 +41,12 @@ interface ApiService {
     @GET("/services")
     suspend fun getAllServices(): Response<List<Service>>
     
+    @GET("services/{serviceId}")
+    suspend fun getServiceDetails(
+        @Path("serviceId") serviceId: Int,
+        @Query("businessId") businessId: Int
+    ): Response<Service>
+
     @POST("/reservations")
     suspend fun createReservation(@Body reservation: ReservationRequest): Response<Reservation>
     

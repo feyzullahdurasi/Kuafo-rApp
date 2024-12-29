@@ -11,27 +11,18 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BakimRepository @Inject constructor(
-    private val api: ApiService,
-    private val db: BarberDatabase
+    private val apiService: BakimAPIService
 ) {
-    suspend fun getBusinesses(): ApiResult<List<Business>> = withContext(Dispatchers.IO) {
-        try {
-            val localData = db.businessDao().getAllBusinesses()
-            if (localData.isNotEmpty()) {
-                return@withContext ApiResult.Success(localData)
-            }
-
-            val response = api.getBusinesses()
+    suspend fun getBusinesses(): APIResult<List<Business>> {
+        return try {
+            val response = apiService.getBusinesses()
             if (response.isSuccessful) {
-                response.body()?.let { businesses ->
-                    db.businessDao().insertAll(businesses)
-                    ApiResult.Success(businesses)
-                } ?: ApiResult.Error(APIError.InvalidData)
+                APIResult.Success(response.body() ?: emptyList())
             } else {
-                ApiResult.Error(APIError.InvalidResponse)
+                APIResult.Error(APIError.ServerError)
             }
         } catch (e: Exception) {
-            ApiResult.Error(APIError.UnableToComplete)
+            APIResult.Error(APIError.NetworkError)
         }
     }
 
@@ -54,6 +45,32 @@ class BakimRepository @Inject constructor(
                 data = null
                 error = e.localizedMessage
             }
+        }
+    }
+
+    suspend fun getServiceDetails(serviceId: Int, businessId: Int): APIResult<Service> {
+        return try {
+            val response = apiService.getServiceDetails(serviceId, businessId)
+            if (response.isSuccessful) {
+                APIResult.Success(response.body() ?: throw Exception("Boş yanıt"))
+            } else {
+                APIResult.Error(APIError.ServerError)
+            }
+        } catch (e: Exception) {
+            APIResult.Error(APIError.NetworkError)
+        }
+    }
+
+    suspend fun createReservation(request: ReservationRequest): APIResult<Reservation> {
+        return try {
+            val response = apiService.createReservation(request)
+            if (response.isSuccessful) {
+                APIResult.Success(response.body() ?: throw Exception("Boş yanıt"))
+            } else {
+                APIResult.Error(APIError.ServerError)
+            }
+        } catch (e: Exception) {
+            APIResult.Error(APIError.NetworkError)
         }
     }
 }

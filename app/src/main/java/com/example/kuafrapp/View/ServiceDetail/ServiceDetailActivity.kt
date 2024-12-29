@@ -4,20 +4,28 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.kuafrapp.R
 import com.example.kuafrapp.View.ReservationActivity
+import com.example.kuafrapp.adapter.CommentsAdapter
 import com.example.kuafrapp.databinding.ActivityServiceDetailBinding
 import com.example.kuafrapp.model.Business
 import com.example.kuafrapp.model.Service
 import com.example.kuafrapp.model.ServiceFeature
+import com.example.kuafrapp.model.UserComment
+import com.example.kuafrapp.repository.BakimRepository
+import com.example.kuafrapp.service.APIResult
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import javax.inject.Inject
 
 class ServiceDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityServiceDetailBinding
@@ -60,7 +68,7 @@ class ServiceDetailActivity : AppCompatActivity() {
         setupServiceFeatures(service)
 
         // Yorumları ayarlama
-        setupComments()
+        setupComments(service.business.comments)
     }
 
     private fun setupServiceFeatures(service: Service) {
@@ -81,12 +89,13 @@ class ServiceDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupComments() {
-        /*val commentsAdapter = CommentsAdapter(business.comments)
+    private fun setupComments(comments: List<UserComment>) {
+        val commentsAdapter = CommentsAdapter()
         binding.commentsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@ServiceDetailActivity)
             adapter = commentsAdapter
-        }*/
+        }
+        commentsAdapter.submitList(comments)
     }
 
     private fun setupObservers() {
@@ -100,7 +109,6 @@ class ServiceDetailActivity : AppCompatActivity() {
                     Toast.makeText(this, result.error.userErrorMessage, Toast.LENGTH_LONG).show()
                 }
                 is APIResult.Loading -> {
-                    // Show loading state
                     binding.progressBar.visibility = View.VISIBLE
                 }
             }
@@ -193,5 +201,17 @@ class ServiceDetailActivity : AppCompatActivity() {
     private fun updateTotalPrice() {
         totalPrice = selectedFeatures.sumOf { it.price.toInt() }
         binding.totalPriceText.text = "${totalPrice}₺"
+    }
+}
+
+class ServiceDetailViewModelFactory @Inject constructor(
+    private val repository: BakimRepository
+) : ViewModelProvider.Factory {
+    
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ServiceDetailViewModel::class.java)) {
+            return ServiceDetailViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

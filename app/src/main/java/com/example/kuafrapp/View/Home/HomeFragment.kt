@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
             // Detay sayfasına yönlendirme
             val intent = Intent(requireContext(), ServiceDetailActivity::class.java).apply {
                 putExtra("serviceId", service.id)
-                putExtra("businessId", service.businessId)
+                putExtra("businessId", service.business.id) // businessId referansını düzelt
             }
             startActivity(intent)
         }
@@ -60,7 +60,7 @@ class HomeFragment : Fragment() {
             when (result) {
                 is APIResult.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    servicesAdapter.submitList(result.data.flatMap { it.services })
+                    servicesAdapter.submitList(result.data.flatMap { it.services }) // Tür uyuşmazlığını düzelt
                 }
                 is APIResult.Error -> {
                     binding.progressBar.visibility = View.GONE
