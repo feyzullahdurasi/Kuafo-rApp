@@ -1,12 +1,21 @@
 package com.example.kuafrapp.View.Home
 
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kuafrapp.model.Business
+import com.example.kuafrapp.model.Service
 import com.example.kuafrapp.repository.BakimRepository
+import com.example.kuafrapp.service.APIError
 import com.example.kuafrapp.service.APIResult
+import com.example.kuafrapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,43 +47,55 @@ class HomeViewModel @Inject constructor(
     val selectedServiceType: LiveData<String?> = _selectedServiceType
 
     private val _filteredServices = MutableLiveData<List<Service>>()
-    val filteredServices: LiveData<List<Service>> get() = _filteredServices
+    val filteredServices: LiveData<List<Service>> = _filteredServices
 
     private val _businesses = MutableLiveData<APIResult<List<Business>>>()
     val businesses: LiveData<APIResult<List<Business>>> = _businesses
 
     init {
-        refreshData()
+        loadServices()
+        loadBusinesses()
     }
 
     fun fetchServices() {
-        // Simulate fetching
-        _businessLiveData.postValue(MockData.sampleServices)
-        applyFilter(null) // Default all services
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                when (val result = repository.getServices()) {
+                    is APIResult.Success -> {
+                        _services.value = result
+                        applyFilter(null)
+                    }
+                    is APIResult.Error -> {
+                        _error.value = result.error.userErrorMessage
+                        _hasError.value = true
+                    }
+                    is APIResult.Loading -> {
+                        // Loading state is handled separately
+                    }
+                }
+            } catch (e: Exception) {
+                _error.value = "Unexpected error: ${e.message}"
+                _hasError.value = true
+            } finally {
+                _isLoading.value = false
+            }
+        }
     }
 
     fun applyFilter(serviceType: String?) {
-        val allServices = _businessLiveData.value?.services ?: emptyList()
-        _filteredServices.postValue(
-            if (serviceType.isNullOrEmpty()) allServices
-            else allServices.filter { it.serviceType == serviceType }
-        )
+        val currentServices = (_services.value as? APIResult.Success)?.data ?: return
+        val filteredList = if (serviceType.isNullOrEmpty()) {
+            currentServices
+        } else {
+            currentServices.filter { it.serviceType == serviceType }
+        }
+        _filteredServices.value = filteredList
     }
 
     fun refreshData() {
-        _isLoading.value = true
-        try {
-            // MockData'dan veri al
-            val mockBusiness = MockData.sampleBusiness
-            _businessLiveData.value = mockBusiness
-            _selectedServiceType.value = null
-            _isLoading.value = false
-            _hasError.value = false
-        } catch (e: Exception) {
-            _hasError.value = true
-            _error.value = "Veri yüklenirken hata oluştu: ${e.localizedMessage}"
-            _isLoading.value = false
-        }
+        loadServices()
+        loadBusinesses()
     }
 
     fun selectService(service: Service) {
@@ -87,20 +108,20 @@ class HomeViewModel @Inject constructor(
         return if (prices.isNotEmpty()) {
             val minPrice = prices.minOrNull()
             val maxPrice = prices.maxOrNull()
-            "4.8" // Örnek bir rating
+            "$minPrice - $maxPrice"
         } else {
             "Price varies"
         }
     }
 
-    fun loadServices() {
+    private fun loadServices() {
         viewModelScope.launch {
             _services.value = APIResult.Loading
             try {
                 val result = repository.getServices()
                 _services.value = result
             } catch (e: Exception) {
-                _services.value = APIResult.Error(APIError.UnableToComplete)
+                _services.value = APIResult.Error(APIError.InvalidData)
             }
         }
     }
@@ -117,10 +138,41 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun loadBusinesses() {
+    private fun loadBusinesses() {
         viewModelScope.launch {
             _businesses.value = APIResult.Loading
-            _businesses.value = repository.getBusinesses()
+            try {
+                val result = repository.getBusinesses()
+                _businesses.value = result
+            } catch (e: Exception) {
+                _businesses.value = APIResult.Error(APIError.InvalidData)
+            }
         }
+    }
+}
+
+class UserErrorDialog @Inject constructor(private val context: Context) {
+    fun showErrorDialog(error: APIError, onDismiss: () -> Unit) {
+        val inflater = LayoutInflater.from(context)
+        val dialogView: View = inflater.inflate(R.layout.dialog_user_error, null)
+
+        dialogView.apply {
+            findViewById<TextView>(R.id.errorTitle).text = "deneme"//context.getString(R.string.error_title)
+            findViewById<TextView>(R.id.errorMessage).text = error.userErrorMessage
+            findViewById<Button>(R.id.dismissButton).setOnClickListener {
+                onDismiss()
+            }
+        }
+
+        AlertDialog.Builder(context)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+            .apply {
+                setOnShowListener {
+                    window?.setBackgroundDrawableResource(android.R.color.transparent)
+                }
+                show()
+            }
     }
 }

@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
@@ -37,6 +38,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
         // Google SignIn setup
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
+            .requestProfile()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
@@ -46,6 +48,22 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
 
         setupListeners()
         observeViewModel()
+
+        // Google girişi için gözlemci ekleyin
+        viewModel.googleSignInResult.observe(this) { result ->
+            when (result) {
+                is Resource.Success -> {
+                    // Google girişi başarılı, InfoActivity'ye yönlendir
+                    val intent = Intent(this, InfoActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                is Resource.Error -> {
+                    // Hata mesajını göster
+                    Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun setupListeners() {
@@ -113,7 +131,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
+            viewModel.handleGoogleSignInResult(task)
         }
     }
 

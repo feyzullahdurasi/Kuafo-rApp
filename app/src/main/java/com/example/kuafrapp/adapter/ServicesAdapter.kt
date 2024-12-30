@@ -31,12 +31,20 @@ class ServicesAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(service: Service) {
             binding.apply {
-                serviceName.text = service.name
-                serviceFeatures.text = service.serviceFeature
-                    .joinToString(", ") { it.name }
-                servicePrice.text = service.serviceFeature
-                    .sumOf { it.price }.toString() + " TL"
-                
+                // Servis adı
+                tvServiceName.text = service.serviceType
+
+                // Servis özellikleri
+                val features = service.serviceFeature.joinToString(", ") {
+                    "${it.name} (${it.price} TL)"
+                }
+                tvServiceFeatures.text = features
+
+                // Toplam fiyat
+                val totalPrice = service.serviceFeature.sumOf { it.price }
+                tvServicePrice.text = String.format("%d TL", totalPrice)
+
+                // Tıklama işlemi
                 root.setOnClickListener { onItemClick(service) }
             }
         }

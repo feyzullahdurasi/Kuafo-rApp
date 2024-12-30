@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
         setupSearchAndFilterControls()
         
         // Servis verilerini yükle
-        viewModel.loadBusinesses()
+        viewModel.fetchServices()
     }
 
     private fun setupRecyclerView() {
@@ -60,7 +60,7 @@ class HomeFragment : Fragment() {
             when (result) {
                 is APIResult.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    servicesAdapter.submitList(result.data.flatMap { it.services }) // Tür uyuşmazlığını düzelt
+                    //servicesAdapter.submitList(result.data.flatMap { it.services })
                 }
                 is APIResult.Error -> {
                     binding.progressBar.visibility = View.GONE

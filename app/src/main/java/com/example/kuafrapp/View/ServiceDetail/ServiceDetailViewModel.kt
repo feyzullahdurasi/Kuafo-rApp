@@ -4,14 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kuafrapp.model.Business
 import com.example.kuafrapp.model.Service
-import com.example.kuafrapp.model.UserComment
 import com.example.kuafrapp.repository.BakimRepository
-import com.example.kuafrapp.model.APIResult
-import com.example.kuafrapp.model.APIError
 import com.example.kuafrapp.model.Reservation
 import com.example.kuafrapp.model.ReservationRequest
+import com.example.kuafrapp.service.APIError
+import com.example.kuafrapp.service.APIResult
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

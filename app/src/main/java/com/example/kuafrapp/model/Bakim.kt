@@ -5,6 +5,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.kuafrapp.roomdb.Converters
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 import java.util.UUID
@@ -92,7 +94,9 @@ data class Service(
     @PrimaryKey
     val id: Int,
     val serviceType: String,
+    @TypeConverters(Converters::class)
     val serviceFeature: List<ServiceFeature>,
+    @TypeConverters(Converters::class)
     val business: Business
 )
 
@@ -123,6 +127,7 @@ data class Reservation(
 @Entity(
     tableName = "businesses_services",
     primaryKeys = ["business_id", "service_id"],
+    indices = [Index("service_id")],
     foreignKeys = [
         ForeignKey(
             entity = Business::class,
@@ -130,13 +135,10 @@ data class Reservation(
             childColumns = ["business_id"]
         ),
         ForeignKey(
-            entity = Service::class,
+            entity = Service::class, 
             parentColumns = ["id"],
             childColumns = ["service_id"]
         )
-    ],
-    indices = [
-        Index(value = ["service_id"])
     ]
 )
 data class BusinessService(

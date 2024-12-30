@@ -22,9 +22,6 @@
             android:name=".View.ReservationActivity"
             android:exported="false" />
         <activity
-            android:name=".View.FilterBarActivity"
-            android:exported="false" />
-        <activity
             android:name=".View.RateBarberActivity"
             android:exported="false" />
         <activity
@@ -40,10 +37,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR_API_KEY" />
-
-        <activity
-            android:name=".View.SettingsFragment"
-            android:exported="false" />
         <activity
             android:name=".View.login.RegisterActivity"
             android:exported="false" />
@@ -51,18 +44,8 @@
             android:name=".View.Info.InfoActivity"
             android:exported="false" />
         <activity
-            android:name=".View.Home.HomeFragment"
-            android:exported="false" />
-        <activity
-            android:name=".View.BarberDetailActivity"
-            android:exported="false" />
-        <activity
             android:name=".View.login.LoginActivity"
             android:exported="false" />
-        <activity
-            android:name=".View.MapsFragment"
-            android:exported="false"
-            android:label="@string/title_activity_maps" />
         <activity
             android:name=".View.MainActivity"
             android:exported="false"

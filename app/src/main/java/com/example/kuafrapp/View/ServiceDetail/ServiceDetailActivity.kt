@@ -16,7 +16,6 @@ import com.example.kuafrapp.R
 import com.example.kuafrapp.View.ReservationActivity
 import com.example.kuafrapp.adapter.CommentsAdapter
 import com.example.kuafrapp.databinding.ActivityServiceDetailBinding
-import com.example.kuafrapp.model.Business
 import com.example.kuafrapp.model.Service
 import com.example.kuafrapp.model.ServiceFeature
 import com.example.kuafrapp.model.UserComment
@@ -53,14 +52,14 @@ class ServiceDetailActivity : AppCompatActivity() {
 
     private fun setupUI(service: Service) {
         // Servis bilgileri
-        binding.businessName.text = service.business.businessName
-        binding.businessAddress.text = service.business.businessAddress
-        binding.businessPrice.text = service.business.businessPrice
-        binding.businessHours.text = service.business.businessHours
+        binding.businessName.text = service.business.name
+        binding.businessAddress.text = service.business.address
+        binding.businessPrice.text = service.business.price
+        binding.businessHours.text = service.business.hours
 
         // Servis resmini yükleme
         Glide.with(this)
-            .load(service.business.businessImage)
+            .load(service.business.image)
             .placeholder(R.drawable.barber_image_bg)
             .into(binding.businessImage)
 
@@ -68,7 +67,7 @@ class ServiceDetailActivity : AppCompatActivity() {
         setupServiceFeatures(service)
 
         // Yorumları ayarlama
-        setupComments(service.business.comments)
+        //setupComments(service.business.comments)
     }
 
     private fun setupServiceFeatures(service: Service) {
@@ -101,24 +100,9 @@ class ServiceDetailActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.serviceDetails.observe(this) { result ->
             when (result) {
-                is APIResult.Success -> {
-                    setupUI(result.data)
+                is APIResult.Success<*> -> {
+                    setupUI(result.data as Service)
                     setupListeners()
-                }
-                is APIResult.Error -> {
-                    Toast.makeText(this, result.error.userErrorMessage, Toast.LENGTH_LONG).show()
-                }
-                is APIResult.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-            }
-        }
-
-        viewModel.reservationResult.observe(this) { result ->
-            when (result) {
-                is APIResult.Success -> {
-                    Toast.makeText(this, "Rezervasyon başarıyla oluşturuldu", Toast.LENGTH_SHORT).show()
-                    finish()
                 }
                 is APIResult.Error -> {
                     Toast.makeText(this, result.error.userErrorMessage, Toast.LENGTH_LONG).show()

@@ -2,11 +2,12 @@ package com.example.kuafrapp.network
 
 import com.example.kuafrapp.service.ApiService
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "http://your-backend-url/"
+    private const val BASE_URL = "http://localhost:3000/api/"
 
     private val client = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().apply {

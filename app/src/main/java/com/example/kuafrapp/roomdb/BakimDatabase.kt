@@ -1,12 +1,31 @@
 package com.example.kuafrapp.roomdb
 
 import android.content.Context
-import androidx.room.*
-import com.example.kuafrapp.model.*
-import java.util.*
+import androidx.room.ColumnInfo
+import androidx.room.Dao
+import androidx.room.Database
+import androidx.room.Delete
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.RewriteQueriesToDropUnusedColumns
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
+import com.example.kuafrapp.model.Business
+import com.example.kuafrapp.model.Reservation
+import com.example.kuafrapp.model.ReservationStatus
+import com.example.kuafrapp.model.Service
+import com.example.kuafrapp.model.ServiceFeature
+import com.example.kuafrapp.model.ServiceType
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.UUID
 
+@TypeConverters(Converters::class)
 @Database(
     entities = [
         Business::class,
@@ -15,25 +34,23 @@ import com.google.gson.reflect.TypeToken
         Reservation::class,
         BusinessService::class
     ],
-    version = 3,
-    exportSchema = true
+    version = 3
 )
-@TypeConverters(Converters::class)
-abstract class BarberDatabase : RoomDatabase() {
+abstract class BakimDatabase : RoomDatabase() {
     abstract fun businessDao(): BusinessDao
     abstract fun serviceDao(): ServiceDao
     abstract fun reservationDao(): ReservationDao
 
     companion object {
         @Volatile
-        private var instance: BarberDatabase? = null
+        private var instance: BakimDatabase? = null
 
-        fun getDatabase(context: Context): BarberDatabase {
+        fun getDatabase(context: Context): BakimDatabase {
             return instance ?: synchronized(this) {
                 Room.databaseBuilder(
                     context.applicationContext,
-                    BarberDatabase::class.java,
-                    "barber_database"
+                    BakimDatabase::class.java,
+                    "bakim_database"
                 )
                 .fallbackToDestructiveMigration()
                 .build()
@@ -45,16 +62,6 @@ abstract class BarberDatabase : RoomDatabase() {
 
 class Converters {
     @TypeConverter
-    fun fromTimestamp(value: Long?): Date? {
-        return value?.let { Date(it) }
-    }
-
-    @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time
-    }
-
-    @TypeConverter
     fun fromServiceFeatureList(value: List<ServiceFeature>): String {
         return Gson().toJson(value)
     }
@@ -65,7 +72,46 @@ class Converters {
         return Gson().fromJson(value, type)
     }
 
-    // Add other converters as needed for your custom types
+    @TypeConverter 
+    fun fromBusiness(business: Business): String {
+        return Gson().toJson(business)
+    }
+
+    @TypeConverter
+    fun toBusiness(value: String): Business {
+        return Gson().fromJson(value, Business::class.java)
+    }
+
+    @TypeConverter
+    fun fromUUID(uuid: UUID?): String? {
+        return uuid?.toString()
+    }
+
+    @TypeConverter
+    fun toUUID(value: String?): UUID? {
+        return value?.let { UUID.fromString(it) }
+    }
+
+    @TypeConverter
+    fun fromServiceType(type: ServiceType?): String? {
+        return type?.description
+    }
+
+    @TypeConverter
+    fun toServiceType(description: String?): ServiceType? {
+        return ServiceType.values().find { it.description == description }
+    }
+
+    @TypeConverter
+    fun fromReservationStatus(status: ReservationStatus?): String? {
+        return status?.name
+    }
+
+    @TypeConverter
+    fun toReservationStatus(name: String?): ReservationStatus? {
+        return name?.let { ReservationStatus.valueOf(it) }
+    }
+
 }
 
 // Dao interfaceleri ekleyelim

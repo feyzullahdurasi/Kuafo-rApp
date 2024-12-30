@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/../../Arduino/RGBLedUzaktanKumandali" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../Arduino/muzikNotalari" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../Arduino/parkSensoru" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../Arduino/trafikIsigi" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../DenemeDrac" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../KuaförApp" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../SwiftDersleri" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../SwiftDersleri/ArafasApp/AldimVerdim" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../SwiftDersleri/ArafasApp/Bakim" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../SwiftDersleri/ArafasApp/DracApp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../SwiftDersleri/ArafasApp/animation" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../SwiftDersleri/ArafasApp/weatherApp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../SwiftDersleri/boykotApp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../flutter_mobil/flavorbox" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../node/sqlserver-api" vcs="Git" />
   </component>
 </project>

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kuafrapp.databinding.ItemCommentBinding
+import com.example.kuafrapp.model.UserComment
 
 class CommentsAdapter : ListAdapter<UserComment, CommentsAdapter.CommentViewHolder>(CommentDiffCallback()) {
     
@@ -14,8 +15,8 @@ class CommentsAdapter : ListAdapter<UserComment, CommentsAdapter.CommentViewHold
             binding.apply {
                 usernameText.text = comment.username
                 commentText.text = comment.commentText
-                ratingBar.rating = comment.rating.toFloat()
-                commentDate.text = comment.createdAt?.formatToString()
+                //ratingBar.rating = comment.rating.toFloat()
+                //commentDate.text = comment.createdAt?.formatToString()
             }
         }
     }

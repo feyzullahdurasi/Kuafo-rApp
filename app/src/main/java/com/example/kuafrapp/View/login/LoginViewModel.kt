@@ -4,6 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import androidx.preference.PreferenceManager
+import com.bumptech.glide.load.engine.Resource
+import dagger.hilt.android.internal.Contexts.getApplication
 
 class LoginViewModel : ViewModel() {
 
@@ -15,6 +21,12 @@ class LoginViewModel : ViewModel() {
 
     private val _loginSuccess = MutableLiveData<Boolean>()
     val loginSuccess: LiveData<Boolean> = _loginSuccess
+
+    private val _googleSignInResult = MutableLiveData<Resource<GoogleSignInAccount>>()
+    val googleSignInResult: LiveData<Resource<GoogleSignInAccount>> = _googleSignInResult
+
+    private val _authToken = MutableLiveData<String>()
+    val authToken: LiveData<String> = _authToken
 
     fun validateEmail(email: String): Boolean {
         return when {
@@ -67,5 +79,33 @@ class LoginViewModel : ViewModel() {
         } else {
             _loginSuccess.value = false
         }
+    }
+
+    fun handleGoogleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+            _googleSignInResult.value = Resource.Success(account)
+            
+            // Google bilgilerini kaydet
+            saveGoogleUserInfo(account)
+            
+            // Başarılı giriş
+            _loginSuccess.value = true
+            
+        } catch (e: ApiException) {
+            _googleSignInResult.value = Resource.Error(e.message ?: "Google Sign-In failed")
+            _loginSuccess.value = false
+        }
+    }
+
+    private fun saveGoogleUserInfo(account: GoogleSignInAccount) {
+        // Kullanıcı bilgilerini SharedPreferences'a kaydet
+        PreferenceManager.getDefaultSharedPreferences(getApplication())
+            .edit()
+            .putString("user_email", account.email)
+            .putString("user_name", account.displayName)
+            .putString("user_photo", account.photoUrl?.toString())
+            .putString("google_id", account.id)
+            .apply()
     }
 }

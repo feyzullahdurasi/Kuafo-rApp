@@ -1,20 +1,14 @@
 package com.example.kuafrapp.adapter
 
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.kuafrapp.R
-import com.example.kuafrapp.View.BarberDetailActivity
 import com.example.kuafrapp.databinding.BarberRecyclerRowBinding
-import com.example.kuafrapp.model.Bakim
 import com.example.kuafrapp.model.Business
-import com.example.kuafrapp.util.dowloandImage
-import com.example.kuafrapp.util.makePlaceHolder
 
 class BarberRecyclerAdapter(
     private val onBarberClick: (Business) -> Unit
@@ -29,14 +23,13 @@ class BarberRecyclerAdapter(
             binding.apply {
                 barberName.text = business.name
                 localeName.text = business.address
-                ratingBar.rating = business.rating ?: 0f
-                priceText.text = business.price
+                //ratingBar.rating = business.rating ?: 0f
 
                 // Glide ile image loading
                 Glide.with(imageView.context)
                     .load(business.image)
-                    .placeholder(R.drawable.placeholder_image)
-                    .error(R.drawable.error_image)
+                    //.placeholder(R.drawable.placeholder_image)
+                    //.error(R.drawable.error_image)
                     .into(imageView)
 
                 root.setOnClickListener { 

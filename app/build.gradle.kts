@@ -17,6 +17,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        //buildConfigField("String", "API_BASE_URL", "https://x.x.x.com/v2/")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -79,6 +81,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.swiperefreshlayout)
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("androidx.preference:preference-ktx:1.2.1")
 
     // Google Libraries
     implementation(libs.play.services.maps)
@@ -143,4 +147,7 @@ dependencies {
     // Hilt
     implementation("com.google.dagger:hilt-android:2.48")
     ksp("com.google.dagger:hilt-compiler:2.48")
+
+    // Gson
+    implementation("com.google.code.gson:gson:2.10.1")
 }
