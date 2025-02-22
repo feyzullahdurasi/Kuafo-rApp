@@ -5,7 +5,7 @@
 
     <activity
         android:id="@+id/loginActivity"
-        android:name="com.example.kuafrapp.View.login.LoginActivity"
+        android:name="com.example.bakim.View.login.LoginActivity"
         tools:layout="@layout/activity_login" >
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
@@ -17,11 +17,11 @@
 
     <activity
         android:id="@+id/registerActivity"
-        android:name="com.example.kuafrapp.View.login.RegisterActivity"
+        android:name="com.example.bakim.View.login.RegisterActivity"
         tools:layout="@layout/activity_register" />
 
     <activity
         android:id="@+id/infoActivity"
-        android:name="com.example.kuafrapp.View.Info.InfoActivity"
+        android:name="com.example.bakim.View.Info.InfoActivity"
         tools:layout="@layout/activity_info" />
 </navigation>

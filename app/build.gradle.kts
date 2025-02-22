@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.kuafrapp"
+    namespace = "com.example.bakim"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.kuafrapp"
+        applicationId = "com.example.bakim"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
