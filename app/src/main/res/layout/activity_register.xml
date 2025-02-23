@@ -18,30 +18,31 @@
         android:backgroundTint="@android:color/white"
         app:strokeColor="@color/black"
         app:strokeWidth="0.5dp"
-        app:cardCornerRadius="0dp">
+        app:cardCornerRadius="12dp">
 
         <LinearLayout
-            android:layout_margin="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:orientation="vertical">
 
-            <Switch
-                android:id="@+id/barberSwitch"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:text="Bir işletme sahibiyim."
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
+                android:text="Bakim"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textAlignment="center">
+            </TextView>
 
             <!-- Berber bilgileri - Başlangıçta görünmez, Switch açıldığında görünür olacak -->
             <LinearLayout
                 android:id="@+id/barberInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical"
-                android:layout_marginTop="16dp">
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/selectPhotoButton"
@@ -59,10 +60,10 @@
                         android:id="@+id/businessNameEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="12dp"
                         android:hint="İşletme Adı"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="12dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -76,11 +77,11 @@
                         android:id="@+id/locationEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="12dp"
                         android:hint="Konum"
                         android:inputType="text"
-                        android:maxLength="100"/>
+                        android:maxLength="100"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="12dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -94,15 +95,16 @@
                         android:id="@+id/telephoneNumberEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="12dp"
                         android:hint="Telefon Numarası"
-                        android:inputType="phone" />
+                        android:inputType="phone"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="12dp" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/mapView">
+                    android:layout_height="match_parent">
 
                 </com.google.android.gms.maps.MapView>
 
@@ -110,8 +112,8 @@
                     android:id="@+id/servicesLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="12dp">
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical">
 
                     <CheckBox
                         android:id="@+id/menHairCheckBox"
@@ -176,10 +178,10 @@
                     android:id="@+id/fullNameEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="12dp"
                     android:hint="@string/full_name"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="12dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -194,10 +196,10 @@
                     android:id="@+id/eMailEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="12dp"
                     android:hint="@string/e_mail"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="12dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -206,20 +208,20 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true"
+                android:layout_marginTop="12dp"
                 app:counterEnabled="true"
                 app:counterMaxLength="15"
-                android:layout_marginTop="12dp">
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwordEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="12dp"
                     android:hint="@string/password"
+                    android:inputType="textPassword"
                     android:maxLength="15"
-                    android:inputType="textPassword" />
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="12dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -228,34 +230,54 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true"
+                android:layout_marginTop="12dp"
                 app:counterEnabled="true"
                 app:counterMaxLength="15"
-                android:layout_marginTop="12dp">
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/rePasswordEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="12dp"
                     android:hint="@string/re_password"
+                    android:inputType="text"
                     android:maxLength="15"
-                    android:inputType="text" />
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="12dp" />
+
+                <Switch
+                    android:id="@+id/barberSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:text="Bir işletme sahibiyim."
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/registerButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textSize="16sp"
+                android:layout_height="60dp"
                 android:backgroundTint="@color/buttonBlue"
+                android:text="@string/register"
                 android:textColor="@android:color/white"
-                android:text="@string/register">
+                android:textSize="16sp">
 
             </com.google.android.material.button.MaterialButton>
+
+            <!-- Google Login Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/loginWithGoogleButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="12dp"
+                android:text="Google ile Kayıt Ol  "
+                android:textColor="@color/black"
+                app:icon="@mipmap/google_icon"
+                app:iconSize="24dp"
+                app:iconTint="@null" />
 
         </LinearLayout>
 
