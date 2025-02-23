@@ -3,37 +3,44 @@ package com.example.bakim.View
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bakim.View.Info.InfoActivity
 import com.example.bakim.View.login.LoginActivity
 import com.example.bakim.databinding.ActivitySplashBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivitySplashBinding
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.bakimText
+        checkLoginStatus()
+    }
 
-        // Kullanıcının giriş yapıp yapmadığını kontrol et
-        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-
-        if (isLoggedIn) {
-            // Eğer giriş yapılmışsa MainActivity'ye yönlendir
-            val intent = Intent(this, InfoActivity::class.java)
-            startActivity(intent)
-        } else {
-            // Giriş yapılmamışsa LoginActivity'ye yönlendir
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+    private fun checkLoginStatus() {
+        viewModel.checkLoginStatus()
+        viewModel.loginStatus.observe(this) { isLoggedIn ->
+            if (isLoggedIn) {
+                navigateToInfo()
+            } else {
+                navigateToLogin()
+            }
         }
+    }
 
-        finish() // SplashActivity'yi kapat
+    private fun navigateToInfo() {
+        startActivity(Intent(this, InfoActivity::class.java))
+        finish()
+    }
+
+    private fun navigateToLogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 }

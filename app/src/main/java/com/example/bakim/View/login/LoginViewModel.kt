@@ -15,17 +15,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    application: Application
+    application: Application,
+    private val bakimRepository: BakimRepository
 ) : AndroidViewModel(application) {
 
-    private val _emailError = MutableLiveData<String?>()
-    val emailError: LiveData<String?> = _emailError
-
-    private val _passwordError = MutableLiveData<String?>()
-    val passwordError: LiveData<String?> = _passwordError
-
-    private val _loginSuccess = MutableLiveData<Boolean>()
-    val loginSuccess: LiveData<Boolean> = _loginSuccess
+    private val _loginResult = MutableLiveData<Resource<Unit>>()
+    val loginResult: LiveData<Resource<Unit>> = _loginResult
 
     private val _googleSignInResult = MutableLiveData<Resource<GoogleSignInAccount>>()
     val googleSignInResult: LiveData<Resource<GoogleSignInAccount>> = _googleSignInResult
@@ -33,57 +28,34 @@ class LoginViewModel @Inject constructor(
     private val _authToken = MutableLiveData<String>()
     val authToken: LiveData<String> = _authToken
 
-    fun validateEmail(email: String): Boolean {
-        return when {
-            email.isEmpty() -> {
-                _emailError.value = "Bu alan boş bırakılamaz"
-                false
-            }
-            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                _emailError.value = "Geçersiz e-posta adresi"
-                false
-            }
-            else -> {
-                _emailError.value = null
-                true
-            }
+    private val _loginSuccess = MutableLiveData<Boolean>()
+    val loginSuccess: LiveData<Boolean> = _loginSuccess
+
+    fun login(email: String, password: String) {
+        if (!validateEmail(email)) {
+            _loginResult.value = Resource.Error("Geçersiz email formatı")
+            return
         }
-    }
 
-    fun validatePassword(password: String): Boolean {
-        return when {
-            password.isEmpty() -> {
-                _passwordError.value = "Bu alan boş bırakılamaz"
-                false
-            }
-            password.length < 8 -> {
-                _passwordError.value = "Şifre en az 8 karakter olmalıdır"
-                false
-            }
-            else -> {
-                _passwordError.value = null
-                true
-            }
+        if (!validatePassword(password)) {
+            _loginResult.value = Resource.Error("Şifre en az 6 karakter olmalıdır")
+            return
         }
-    }
 
-    fun onLoginClick(email: String, password: String) {
-        val isEmailValid = validateEmail(email)
-        val isPasswordValid = validatePassword(password)
-
-        if (isEmailValid && isPasswordValid) {
-            checkLoginCredentials(email, password)
-        }
-    }
-
-    private fun checkLoginCredentials(email: String, password: String) {
-        // Normalde bir API veya veritabanı ile kontrol yapılır.
-        // Bu örnekte, giriş başarı koşulu "user@example.com" ve "password123" olarak simüle edilmiştir.
-        if (email == "user@example.com" && password == "password123") {
-            _loginSuccess.value = true
+        // Burada gerçek API çağrısı yapılacak
+        if (email == "test@test.com" && password == "123456") {
+            _loginResult.value = Resource.Success(Unit)
         } else {
-            _loginSuccess.value = false
+            _loginResult.value = Resource.Error("Email veya şifre hatalı")
         }
+    }
+
+    private fun validateEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    private fun validatePassword(password: String): Boolean {
+        return password.length >= 6
     }
 
     fun handleGoogleSignInResult(completedTask: Task<GoogleSignInAccount>) {
